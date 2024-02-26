@@ -1,3 +1,4 @@
+import { CommonModule } from '@angular/common';
 import { Component, ElementRef } from '@angular/core';
 import {
   FormBuilder,
@@ -10,14 +11,14 @@ import { ActivatedRoute, Router } from '@angular/router';
 @Component({
   selector: 'app-home',
   standalone: true,
-  imports: [ReactiveFormsModule],
+  imports: [ReactiveFormsModule, CommonModule],
   templateUrl: './home.component.html',
   styleUrl: './home.component.scss',
 })
 export class HomeComponent {
   protected answer = '';
 
-  protected listAnswers: {
+  protected tries: {
     numbers: string[];
     correctNumberCount: number;
     correctPositionCount: number;
@@ -71,7 +72,7 @@ export class HomeComponent {
       this.formGroup.controls[controlName].setValue(event.key);
       setTimeout(() => {
         this.nextFocus(controlName);
-      }, 100);
+      }, 50);
       return true;
     }
 
@@ -96,10 +97,11 @@ export class HomeComponent {
     const seed = new Date(year, month - 1, day).getTime();
     const randomNumber = Math.floor(Math.abs(Math.sin(seed) * 10000)) % 10000;
     this.answer = randomNumber.toString();
+    console.log(this.answer);
   }
 
   private checkAnswer(currentAnswer: string): boolean {
-    const result: {
+    const currentTry: {
       numbers: string[];
       correctNumberCount: number;
       correctPositionCount: number;
@@ -114,19 +116,18 @@ export class HomeComponent {
     for (let index = 0; index < currentAnswer.length; index++) {
       const current = currentAnswer[index];
 
-      result.numbers.push(current);
+      currentTry.numbers.push(current);
 
       const exist = this.answer.indexOf(current) >= 0;
-      if (exist) result.correctNumberCount = result.correctNumberCount + 1;
+      if (exist) currentTry.correctNumberCount += 1;
 
-      if (current === this.answer[index])
-        result.correctPositionCount = result.correctPositionCount + 1;
-      else if (exist) result.wrongPositionCount = result.wrongPositionCount + 1;
+      if (current === this.answer[index]) currentTry.correctPositionCount += 1;
+      else if (exist) currentTry.wrongPositionCount += 1;
     }
 
-    this.listAnswers.push(result);
+    this.tries.push(currentTry);
 
-    return result.correctNumberCount === result.correctPositionCount;
+    return this.answer.length === currentTry.correctPositionCount;
   }
 
   protected isValid(fieldName: string): boolean {
