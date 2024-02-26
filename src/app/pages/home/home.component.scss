@@ -1,11 +1,16 @@
 .custom-input {
-  @apply w-14 h-14;
-  @apply text-5xl;
+  @apply md:w-14 md:h-14 w-9 h-9;
+  @apply md:text-5xl text-4xl;
   @apply text-center;
   @apply align-top;
   @apply pb-1;
   @apply m-2;
+  @apply rounded-lg;
+  @apply caret-transparent;
 
-  @apply rounded-xl;
-  @apply border-2;
+  @apply border-0 outline-none;
+  @apply ring-2 ring-orange-500;
+  @apply focus:ring-4 focus:ring-orange-500;
+  @apply disabled:bg-orange-200;
+  @apply required:ring-red-600;
 }

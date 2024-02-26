@@ -1,14 +1,73 @@
 <div class="flex flex-col items-center justify-center min-h-screen">
-  <div class="flex">
-    <input type="text" class="custom-input" maxlength="1" value="0" />
-    <input type="text" class="custom-input" maxlength="1" value="1" />
-    <input type="text" class="custom-input" maxlength="1" value="2" />
-    <input type="text" class="custom-input" maxlength="1" value="3" />
-    <input type="text" class="custom-input" maxlength="1" value="4" />
-    <input type="text" class="custom-input" maxlength="1" value="5" />
-    <input type="text" class="custom-input" maxlength="1" value="6" />
-    <input type="text" class="custom-input" maxlength="1" value="7" />
-    <input type="text" class="custom-input" maxlength="1" value="8" />
-    <input type="text" class="custom-input" maxlength="1" value="9" />
+  @for (item of listAnswers; track item) {
+
+  <div class="flex flex-col">
+    <div class="flex">
+      @for (number of item.numbers; track number) {
+      <input
+        type="text"
+        class="custom-input"
+        maxlength="1"
+        disabled
+        [value]="number"
+      />
+      }
+    </div>
+    <span class="mx-3 -mt-1 text-xl">
+      {{ item.correctNumberCount }} numbers are correct
+    </span>
+    <span class="mx-6 -mt-1 text-xl">
+      {{ item.correctPositionCount }} in the correct position
+    </span>
+    <span class="mx-6 -mt-1 text-xl"
+      >{{ item.wrongPositionCount }} in the wrong position
+    </span>
+  </div>
+  }
+  <div class="flex flex-col">
+    @if(!correct){
+    <form class="flex" [formGroup]="formGroup" (ngSubmit)="send()">
+      <input
+        type="text"
+        class="custom-input"
+        maxlength="1"
+        formControlName="number1"
+        [required]="!isValid('number1') && submitted"
+        (keydown)="onKeyDown($event)"
+      />
+      <input
+        type="text"
+        class="custom-input"
+        maxlength="1"
+        formControlName="number2"
+        [required]="!isValid('number2') && submitted"
+        (keydown)="onKeyDown($event)"
+      />
+      <input
+        type="text"
+        class="custom-input"
+        maxlength="1"
+        formControlName="number3"
+        [required]="!isValid('number3') && submitted"
+        (keydown)="onKeyDown($event)"
+      />
+      <input
+        type="text"
+        class="custom-input"
+        maxlength="1"
+        formControlName="number4"
+        [required]="!isValid('number4') && submitted"
+        (keydown)="onKeyDown($event)"
+      />
+      <button
+        class="md:text-3xl text-2xl bg-orange-300 px-4 rounded-lg my-2 uppercase hover:bg-orange-400 font-semibold"
+        type="submit"
+      >
+        Send
+      </button>
+    </form>
+    } @else {
+    <span class="text-center mt-5 text-4xl">Victory!</span>
+    }
   </div>
 </div>
