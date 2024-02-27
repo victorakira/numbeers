@@ -13,13 +13,10 @@
       />
       }
     </div>
-    <span class="mx-3 -mt-1 text-xl">
-      &#8226; {{ currentTry.correctNumberCount }} numbers are correct
-    </span>
-    <span class="mx-6 -mt-1 text-xl">
+    <span class="mx-4 -mt-1 text-xl">
       &#8226; {{ currentTry.correctPositionCount }} in the correct position
     </span>
-    <span class="mx-6 -mt-1 text-xl">
+    <span class="mx-4 -mt-1 text-xl">
       &#8226; {{ currentTry.wrongPositionCount }} in the wrong position
     </span>
   </div>
@@ -62,7 +59,7 @@
         />
       </div>
       <button
-        class="py-3 m-2 text-2xl font-bold uppercase bg-orange-300 rounded-lg hover:bg-orange-400"
+        class="py-3 m-2 text-2xl font-bold uppercase bg-orange-500 rounded-lg text-orange-50 hover:bg-orange-400"
         type="submit"
       >
         Send
@@ -73,5 +70,63 @@
       >Victory!</span
     >
     }
+  </div>
+
+  <div class="flex flex-col">
+    <div class="flex">
+      <button
+        class="px-3 py-1 m-1 text-2xl font-bold uppercase bg-orange-500 rounded-lg text-orange-50 hover:bg-orange-400"
+        (click)="buttonClick('1')"
+      >
+        1
+      </button>
+      <button
+        class="px-3 py-1 m-1 text-2xl font-bold uppercase bg-orange-500 rounded-lg text-orange-50 hover:bg-orange-400"
+      >
+        2
+      </button>
+      <button
+        class="px-3 py-1 m-1 text-2xl font-bold uppercase bg-orange-500 rounded-lg text-orange-50 hover:bg-orange-400"
+      >
+        3
+      </button>
+      <button
+        class="px-3 py-1 m-1 text-2xl font-bold uppercase bg-orange-500 rounded-lg text-orange-50 hover:bg-orange-400"
+      >
+        4
+      </button>
+      <button
+        class="px-3 py-1 m-1 text-2xl font-bold uppercase bg-orange-500 rounded-lg text-orange-50 hover:bg-orange-400"
+      >
+        5
+      </button>
+    </div>
+    <div class="flex">
+      <button
+        class="px-3 py-1 m-1 text-2xl font-bold uppercase bg-orange-500 rounded-lg text-orange-50 hover:bg-orange-400"
+      >
+        6
+      </button>
+      <button
+        class="px-3 py-1 m-1 text-2xl font-bold uppercase bg-orange-500 rounded-lg text-orange-50 hover:bg-orange-400"
+      >
+        7
+      </button>
+      <button
+        class="px-3 py-1 m-1 text-2xl font-bold uppercase bg-orange-500 rounded-lg text-orange-50 hover:bg-orange-400"
+      >
+        8
+      </button>
+      <button
+        class="px-3 py-1 m-1 text-2xl font-bold uppercase bg-orange-500 rounded-lg text-orange-50 hover:bg-orange-400"
+      >
+        9
+      </button>
+      <button
+        class="px-3 py-1 m-1 text-2xl font-bold uppercase bg-orange-500 rounded-lg text-orange-50 hover:bg-orange-400"
+      >
+        0
+      </button>
+    </div>
   </div>
 </div>

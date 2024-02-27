@@ -5,9 +5,11 @@
   @apply align-top;
   @apply pb-1;
   @apply m-2;
-  @apply rounded-lg;
+  @apply rounded;
   @apply caret-transparent;
 
+  @apply cursor-pointer;
+  @apply text-orange-500;
   @apply border-0 outline-none;
   @apply ring-2 ring-orange-500;
   @apply focus:ring-4 focus:ring-orange-500;

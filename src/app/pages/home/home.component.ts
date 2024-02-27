@@ -20,7 +20,6 @@ export class HomeComponent {
 
   protected tries: {
     numbers: string[];
-    correctNumberCount: number;
     correctPositionCount: number;
     wrongPositionCount: number;
   }[] = [];
@@ -79,18 +78,33 @@ export class HomeComponent {
     return false;
   }
 
+  protected buttonClick(value: string) {
+    const input = document.activeElement?.previousElementSibling as HTMLElement;
+    console.log(input);
+    if (!input) return;
+
+    const controlName = input.getAttribute('formControlName')!;
+
+    this.formGroup.controls[controlName].setValue(value);
+
+    this.nextFocus(controlName);
+  }
+
   protected nextFocus(currentElement: string) {
     const keys = Object.keys(this.formGroup.controls);
     const currentIndex = keys.indexOf(currentElement);
     const nextIndex = currentIndex + 1 > keys.length - 1 ? 0 : currentIndex + 1;
     const nextKey = keys[nextIndex];
 
-    const inputs = this.el.nativeElement.querySelectorAll(
-      `[formControlName="${nextKey}"]`
+    this.setFocus(nextKey);
+  }
+
+  protected setFocus(formControlName: string) {
+    const input = this.el.nativeElement.querySelector(
+      `[formControlName="${formControlName}"]`
     );
-    if (inputs.length > 0) {
-      inputs[0].focus();
-    }
+
+    input.focus();
   }
 
   private setAnswer(year: number, month: number, day: number) {
@@ -103,26 +117,44 @@ export class HomeComponent {
   private checkAnswer(currentAnswer: string): boolean {
     const currentTry: {
       numbers: string[];
-      correctNumberCount: number;
       correctPositionCount: number;
       wrongPositionCount: number;
     } = {
-      numbers: [],
-      correctNumberCount: 0,
+      numbers: currentAnswer.split(''),
       correctPositionCount: 0,
       wrongPositionCount: 0,
+    };
+
+    const counter: { [id: string]: number } = {
+      '0': this.answer.split('0').length - 1,
+      '1': this.answer.split('1').length - 1,
+      '2': this.answer.split('2').length - 1,
+      '3': this.answer.split('3').length - 1,
+      '4': this.answer.split('4').length - 1,
+      '5': this.answer.split('5').length - 1,
+      '6': this.answer.split('6').length - 1,
+      '7': this.answer.split('7').length - 1,
+      '8': this.answer.split('8').length - 1,
+      '9': this.answer.split('9').length - 1,
     };
 
     for (let index = 0; index < currentAnswer.length; index++) {
       const current = currentAnswer[index];
 
-      currentTry.numbers.push(current);
+      if (counter[current] <= 0) continue;
 
-      const exist = this.answer.indexOf(current) >= 0;
-      if (exist) currentTry.correctNumberCount += 1;
+      if (current === this.answer[index]) {
+        currentTry.correctPositionCount += 1;
+        counter[current] -= 1;
+      }
+    }
 
-      if (current === this.answer[index]) currentTry.correctPositionCount += 1;
-      else if (exist) currentTry.wrongPositionCount += 1;
+    for (let index = 0; index < currentAnswer.length; index++) {
+      const current = currentAnswer[index];
+
+      if (counter[current] <= 0) continue;
+
+      if (this.answer.includes(current)) currentTry.wrongPositionCount += 1;
     }
 
     this.tries.push(currentTry);
@@ -142,6 +174,14 @@ export class HomeComponent {
 
       this.submitted = false;
       this.formGroup.reset();
+      this.setFocus('number1');
+      setTimeout(() => {
+        this.goToBottom();
+      }, 100);
     }
+  }
+
+  goToBottom() {
+    window.scrollTo(0, document.body.scrollHeight);
   }
 }
