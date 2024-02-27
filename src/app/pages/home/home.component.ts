@@ -1,5 +1,5 @@
 import { CommonModule } from '@angular/common';
-import { Component, ElementRef } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import {
   FormBuilder,
   FormGroup,
@@ -7,6 +7,8 @@ import {
   Validators,
 } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
+import { LocalStorageModel } from '../../models/localStorageModel';
+import { LocalStorageService } from '../../services/localStorage.service';
 
 @Component({
   selector: 'app-home',
@@ -15,7 +17,7 @@ import { ActivatedRoute, Router } from '@angular/router';
   templateUrl: './home.component.html',
   styleUrl: './home.component.scss',
 })
-export class HomeComponent {
+export class HomeComponent implements OnInit {
   protected answer = '';
 
   protected tries: {
@@ -29,11 +31,13 @@ export class HomeComponent {
   protected submitted: boolean = false;
   protected formGroup: FormGroup;
 
+  private localStorageModel: LocalStorageModel;
+
   constructor(
-    private el: ElementRef,
     route: ActivatedRoute,
     router: Router,
-    fb: FormBuilder
+    fb: FormBuilder,
+    private service: LocalStorageService
   ) {
     this.formGroup = fb.group({
       number1: fb.control('', [Validators.required, Validators.maxLength(1)]),
@@ -47,13 +51,34 @@ export class HomeComponent {
     let month = currentDate.getMonth() + 1;
     let day = currentDate.getDate();
 
-    if (router.url.includes('previous')) {
-      year = Number(route.snapshot.paramMap.get('year'));
-      month = Number(route.snapshot.paramMap.get('month'));
-      day = Number(route.snapshot.paramMap.get('day'));
-    }
+    // if (router.url.includes('previous')) {
+    //   year = Number(route.snapshot.paramMap.get('year'));
+    //   month = Number(route.snapshot.paramMap.get('month'));
+    //   day = Number(route.snapshot.paramMap.get('day'));
+    // }
 
     this.setAnswer(year, month, day);
+    this.localStorageModel = this.service.get();
+  }
+
+  ngOnInit(): void {
+    const today = new Date();
+    today.setHours(0, 0, 0, 0);
+
+    if (this.localStorageModel.stats.lastGame != today.toISOString()) {
+      this.localStorageModel.stats.totalGame += 1;
+      this.localStorageModel.stats.lastGame = today.toISOString();
+      this.localStorageModel.tries = [];
+      this.service.save(this.localStorageModel);
+    }
+
+    this.localStorageModel.tries.forEach((curtry) => {
+      curtry.forEach((n, i) => {
+        this.formGroup.controls[`number${i + 1}`].setValue(n);
+      });
+
+      this.send(false);
+    });
   }
 
   protected onKeyDown(event: any): boolean {
@@ -159,11 +184,21 @@ export class HomeComponent {
     return this.formGroup.controls[fieldName].valid;
   }
 
-  protected send() {
+  protected send(addTryOnLocalStorage: boolean = true) {
     this.submitted = true;
     if (this.formGroup.valid) {
-      const values = Object.values(this.formGroup.value);
+      const values = Object.values(this.formGroup.value).map((x) => String(x));
       this.correct = this.checkAnswer(values.join(''));
+
+      if (addTryOnLocalStorage) {
+        this.localStorageModel.tries.push(values);
+
+        if (this.correct) {
+          this.localStorageModel.stats.totalWin += 1;
+        }
+
+        this.service.save(this.localStorageModel);
+      }
 
       this.submitted = false;
       this.formGroup.reset();

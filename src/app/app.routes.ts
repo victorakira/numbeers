@@ -6,9 +6,9 @@ export const routes: Routes = [
     path: '',
     component: HomeComponent,
   },
-  {
-    path: 'previous/:year/:month/:day',
-    component: HomeComponent,
-  },
+  // {
+  //   path: 'previous/:year/:month/:day',
+  //   component: HomeComponent,
+  // },
   { path: '**', redirectTo: '/' },
 ];
