@@ -32,6 +32,8 @@
           formControlName="number1"
           [required]="!isValid('number1') && submitted"
           (keydown)="onKeyDown($event)"
+          (click)="inputClick('number1')"
+          [ngClass]="{ 'custom-input-focus': inputOnFocus == 'number1' }"
         />
         <input
           type="text"
@@ -40,6 +42,8 @@
           formControlName="number2"
           [required]="!isValid('number2') && submitted"
           (keydown)="onKeyDown($event)"
+          (click)="inputClick('number2')"
+          [ngClass]="{ 'custom-input-focus': inputOnFocus == 'number2' }"
         />
         <input
           type="text"
@@ -48,6 +52,8 @@
           formControlName="number3"
           [required]="!isValid('number3') && submitted"
           (keydown)="onKeyDown($event)"
+          (click)="inputClick('number3')"
+          [ngClass]="{ 'custom-input-focus': inputOnFocus == 'number3' }"
         />
         <input
           type="text"
@@ -56,6 +62,8 @@
           formControlName="number4"
           [required]="!isValid('number4') && submitted"
           (keydown)="onKeyDown($event)"
+          (click)="inputClick('number4')"
+          [ngClass]="{ 'custom-input-focus': inputOnFocus == 'number4' }"
         />
       </div>
       <button
@@ -82,21 +90,25 @@
       </button>
       <button
         class="px-3 py-1 m-1 text-2xl font-bold uppercase bg-orange-500 rounded-lg text-orange-50 hover:bg-orange-400"
+        (click)="buttonClick('2')"
       >
         2
       </button>
       <button
         class="px-3 py-1 m-1 text-2xl font-bold uppercase bg-orange-500 rounded-lg text-orange-50 hover:bg-orange-400"
+        (click)="buttonClick('3')"
       >
         3
       </button>
       <button
         class="px-3 py-1 m-1 text-2xl font-bold uppercase bg-orange-500 rounded-lg text-orange-50 hover:bg-orange-400"
+        (click)="buttonClick('4')"
       >
         4
       </button>
       <button
         class="px-3 py-1 m-1 text-2xl font-bold uppercase bg-orange-500 rounded-lg text-orange-50 hover:bg-orange-400"
+        (click)="buttonClick('5')"
       >
         5
       </button>
@@ -104,26 +116,31 @@
     <div class="flex">
       <button
         class="px-3 py-1 m-1 text-2xl font-bold uppercase bg-orange-500 rounded-lg text-orange-50 hover:bg-orange-400"
+        (click)="buttonClick('6')"
       >
         6
       </button>
       <button
         class="px-3 py-1 m-1 text-2xl font-bold uppercase bg-orange-500 rounded-lg text-orange-50 hover:bg-orange-400"
+        (click)="buttonClick('7')"
       >
         7
       </button>
       <button
         class="px-3 py-1 m-1 text-2xl font-bold uppercase bg-orange-500 rounded-lg text-orange-50 hover:bg-orange-400"
+        (click)="buttonClick('8')"
       >
         8
       </button>
       <button
         class="px-3 py-1 m-1 text-2xl font-bold uppercase bg-orange-500 rounded-lg text-orange-50 hover:bg-orange-400"
+        (click)="buttonClick('9')"
       >
         9
       </button>
       <button
         class="px-3 py-1 m-1 text-2xl font-bold uppercase bg-orange-500 rounded-lg text-orange-50 hover:bg-orange-400"
+        (click)="buttonClick('0')"
       >
         0
       </button>

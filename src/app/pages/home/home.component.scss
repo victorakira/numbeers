@@ -12,7 +12,10 @@
   @apply text-orange-500;
   @apply border-0 outline-none;
   @apply ring-2 ring-orange-500;
-  @apply focus:ring-4 focus:ring-orange-500;
   @apply disabled:bg-orange-200;
   @apply required:ring-red-600;
+}
+
+.custom-input-focus {
+  @apply ring-4 ring-orange-500;
 }

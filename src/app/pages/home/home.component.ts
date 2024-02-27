@@ -24,6 +24,7 @@ export class HomeComponent {
     wrongPositionCount: number;
   }[] = [];
 
+  protected inputOnFocus: string = 'number1';
   protected correct: boolean = false;
   protected submitted: boolean = false;
   protected formGroup: FormGroup;
@@ -56,34 +57,34 @@ export class HomeComponent {
   }
 
   protected onKeyDown(event: any): boolean {
-    const controlName = event.target?.getAttribute('formControlName');
+    const controlName = this.inputOnFocus;
 
-    if (event.key === 'Tab' || event.key === 'Enter') {
-      return true;
-    }
-
-    if (event.key === 'Backspace') {
-      this.formGroup.controls[controlName].reset();
-      return true;
-    }
-
-    if (!isNaN(Number(event.key))) {
-      this.formGroup.controls[controlName].setValue(event.key);
-      setTimeout(() => {
+    switch (event.key) {
+      case 'Backspace':
+        this.formGroup.controls[controlName].reset();
+        break;
+      case 'Tab':
         this.nextFocus(controlName);
-      }, 50);
-      return true;
+        break;
+      case 'Enter':
+        return true;
+      default:
+        if (!isNaN(Number(event.key))) {
+          this.formGroup.controls[controlName].setValue(event.key);
+          this.nextFocus(controlName);
+          return true;
+        }
     }
 
     return false;
   }
 
-  protected buttonClick(value: string) {
-    const input = document.activeElement?.previousElementSibling as HTMLElement;
-    console.log(input);
-    if (!input) return;
+  protected inputClick(controlName: string) {
+    this.inputOnFocus = controlName;
+  }
 
-    const controlName = input.getAttribute('formControlName')!;
+  protected buttonClick(value: string) {
+    const controlName = this.inputOnFocus;
 
     this.formGroup.controls[controlName].setValue(value);
 
@@ -96,15 +97,7 @@ export class HomeComponent {
     const nextIndex = currentIndex + 1 > keys.length - 1 ? 0 : currentIndex + 1;
     const nextKey = keys[nextIndex];
 
-    this.setFocus(nextKey);
-  }
-
-  protected setFocus(formControlName: string) {
-    const input = this.el.nativeElement.querySelector(
-      `[formControlName="${formControlName}"]`
-    );
-
-    input.focus();
+    this.inputOnFocus = nextKey;
   }
 
   private setAnswer(year: number, month: number, day: number) {
@@ -174,7 +167,7 @@ export class HomeComponent {
 
       this.submitted = false;
       this.formGroup.reset();
-      this.setFocus('number1');
+      this.inputOnFocus = 'number1';
       setTimeout(() => {
         this.goToBottom();
       }, 100);
