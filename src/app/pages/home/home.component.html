@@ -31,7 +31,6 @@
           maxlength="1"
           formControlName="number1"
           [required]="!isValid('number1') && submitted"
-          (keydown)="onKeyDown($event)"
           (click)="inputClick('number1')"
           [ngClass]="{ 'custom-input-focus': inputOnFocus == 'number1' }"
         />
@@ -41,7 +40,6 @@
           maxlength="1"
           formControlName="number2"
           [required]="!isValid('number2') && submitted"
-          (keydown)="onKeyDown($event)"
           (click)="inputClick('number2')"
           [ngClass]="{ 'custom-input-focus': inputOnFocus == 'number2' }"
         />
@@ -51,7 +49,6 @@
           maxlength="1"
           formControlName="number3"
           [required]="!isValid('number3') && submitted"
-          (keydown)="onKeyDown($event)"
           (click)="inputClick('number3')"
           [ngClass]="{ 'custom-input-focus': inputOnFocus == 'number3' }"
         />
@@ -61,7 +58,6 @@
           maxlength="1"
           formControlName="number4"
           [required]="!isValid('number4') && submitted"
-          (keydown)="onKeyDown($event)"
           (click)="inputClick('number4')"
           [ngClass]="{ 'custom-input-focus': inputOnFocus == 'number4' }"
         />

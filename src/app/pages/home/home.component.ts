@@ -1,5 +1,5 @@
 import { CommonModule } from '@angular/common';
-import { Component, OnInit } from '@angular/core';
+import { Component, HostListener, OnInit } from '@angular/core';
 import {
   FormBuilder,
   FormGroup,
@@ -73,30 +73,26 @@ export class HomeComponent implements OnInit {
     }
 
     this.localStorageModel.tries.forEach((curtry) => {
-      curtry.forEach((n, i) => {
-        this.formGroup.controls[`number${i + 1}`].setValue(n);
-      });
-
-      this.send(false);
+      this.checkAnswer(curtry.join(''));
     });
   }
 
+  @HostListener('document:keydown', ['$event'])
   protected onKeyDown(event: any): boolean {
-    const controlName = this.inputOnFocus;
-
     switch (event.key) {
       case 'Backspace':
-        this.formGroup.controls[controlName].reset();
+        this.formGroup.controls[this.inputOnFocus].reset();
         break;
       case 'Tab':
-        this.nextFocus(controlName);
+        this.nextFocus(this.inputOnFocus);
         break;
       case 'Enter':
-        return true;
+        this.send();
+        break;
       default:
         if (!isNaN(Number(event.key))) {
-          this.formGroup.controls[controlName].setValue(event.key);
-          this.nextFocus(controlName);
+          this.formGroup.controls[this.inputOnFocus].setValue(event.key);
+          this.nextFocus(this.inputOnFocus);
           return true;
         }
     }
@@ -109,11 +105,9 @@ export class HomeComponent implements OnInit {
   }
 
   protected buttonClick(value: string) {
-    const controlName = this.inputOnFocus;
+    this.formGroup.controls[this.inputOnFocus].setValue(value);
 
-    this.formGroup.controls[controlName].setValue(value);
-
-    this.nextFocus(controlName);
+    this.nextFocus(this.inputOnFocus);
   }
 
   protected nextFocus(currentElement: string) {
@@ -129,6 +123,7 @@ export class HomeComponent implements OnInit {
     const seed = new Date(year, month - 1, day).getTime();
     const randomNumber = Math.floor(Math.abs(Math.sin(seed) * 10000)) % 10000;
     this.answer = randomNumber.toString();
+    console.log(this.answer);
   }
 
   private checkAnswer(currentAnswer: string): boolean {
@@ -142,18 +137,11 @@ export class HomeComponent implements OnInit {
       wrongPositionCount: 0,
     };
 
-    const counter: { [id: string]: number } = {
-      '0': this.answer.split('0').length - 1,
-      '1': this.answer.split('1').length - 1,
-      '2': this.answer.split('2').length - 1,
-      '3': this.answer.split('3').length - 1,
-      '4': this.answer.split('4').length - 1,
-      '5': this.answer.split('5').length - 1,
-      '6': this.answer.split('6').length - 1,
-      '7': this.answer.split('7').length - 1,
-      '8': this.answer.split('8').length - 1,
-      '9': this.answer.split('9').length - 1,
-    };
+    const counter: { [id: string]: number } = {};
+
+    for (const num of this.answer) {
+      counter[num] = (counter[num] || 0) + 1;
+    }
 
     for (let index = 0; index < currentAnswer.length; index++) {
       const current = currentAnswer[index];
@@ -171,7 +159,10 @@ export class HomeComponent implements OnInit {
 
       if (counter[current] <= 0) continue;
 
-      if (this.answer.includes(current)) currentTry.wrongPositionCount += 1;
+      if (this.answer.includes(current)) {
+        currentTry.wrongPositionCount += 1;
+        counter[current] -= 1;
+      }
     }
 
     this.tries.push(currentTry);
@@ -183,21 +174,19 @@ export class HomeComponent implements OnInit {
     return this.formGroup.controls[fieldName].valid;
   }
 
-  protected send(addTryOnLocalStorage: boolean = true) {
+  protected send() {
     this.submitted = true;
     if (this.formGroup.valid) {
       const values = Object.values(this.formGroup.value).map((x) => String(x));
       this.correct = this.checkAnswer(values.join(''));
 
-      if (addTryOnLocalStorage) {
-        this.localStorageModel.tries.push(values);
+      this.localStorageModel.tries.push(values);
 
-        if (this.correct) {
-          this.localStorageModel.stats.totalWin += 1;
-        }
-
-        this.service.save(this.localStorageModel);
+      if (this.correct) {
+        this.localStorageModel.stats.totalWin += 1;
       }
+
+      this.service.save(this.localStorageModel);
 
       this.submitted = false;
       this.formGroup.reset();
