@@ -1,0 +1,2 @@
+ng build --configuration=production --base-href https://victorakira.github.io/numbeers/
+npx angular-cli-ghpages --dir=dist/numbeers/browser

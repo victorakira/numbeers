@@ -78,12 +78,14 @@ export class GenerateNumberComponent {
 
   protected send() {
     this.submitted = true;
+    console.log(window.location);
     this.link = '';
     if (this.formGroup.valid) {
       const values = Object.values(this.formGroup.value).map((x) => String(x));
+      const baseUrl = window.location.href.replace('/generate-number', '');
       const code = this.cryptoService.encrypt(values.join(''));
-      this.link = `${window.location.origin}/friend?code=${code}`;
-      this.copy();
+
+      this.link = `${baseUrl}/friend?code=${code}`;
     }
   }
 
