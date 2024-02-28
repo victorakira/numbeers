@@ -74,7 +74,8 @@
       </button>
     </form>
     } @else {
-    <span class="mt-5 text-4xl font-bold text-center text-emerald-600"
+    <span
+      class="px-5 py-3 mt-5 text-4xl font-bold text-center bg-orange-500 animate-bounce text-orange-50 rounded-xl"
       >Victory!</span
     >
     }
@@ -144,6 +145,35 @@
       >
         0
       </button>
+    </div>
+  </div>
+  } @else {
+  <div class="flex flex-col p-5 mt-2 text-orange-500 bg-orange-200 rounded-2xl">
+    <span class="mb-3 text-5xl font-semibold text-center">stats</span>
+    <div class="flex">
+      <div class="flex flex-col p-3">
+        <span class="text-3xl font-semibold text-center">
+          {{ localStorageModel.stats.totalGame }}
+        </span>
+        <span class="text-xl">Games</span>
+      </div>
+
+      <div class="flex flex-col p-3">
+        <span class="text-3xl font-semibold text-center">
+          {{
+            localStorageModel.stats.totalWin /
+              localStorageModel.stats.totalGame
+          }}%
+        </span>
+        <span class="text-xl">Victory</span>
+      </div>
+
+      <div class="flex flex-col p-3">
+        <span class="text-3xl font-semibold text-center">
+          {{ localStorageModel.stats.totalWin }}
+        </span>
+        <span class="text-xl">Wins</span>
+      </div>
     </div>
   </div>
   }

@@ -31,7 +31,7 @@ export class HomeComponent implements OnInit {
   protected submitted: boolean = false;
   protected formGroup: FormGroup;
 
-  private localStorageModel: LocalStorageModel;
+  protected localStorageModel: LocalStorageModel;
 
   constructor(
     route: ActivatedRoute,
@@ -129,7 +129,6 @@ export class HomeComponent implements OnInit {
     const seed = new Date(year, month - 1, day).getTime();
     const randomNumber = Math.floor(Math.abs(Math.sin(seed) * 10000)) % 10000;
     this.answer = randomNumber.toString();
-    console.log(this.answer);
   }
 
   private checkAnswer(currentAnswer: string): boolean {
