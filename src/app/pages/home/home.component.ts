@@ -8,6 +8,7 @@ import {
 } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
 import { LocalStorageModel } from '../../models/localStorageModel';
+import { CryptoService } from '../../services/crypto.service';
 import { LocalStorageService } from '../../services/localStorage.service';
 
 @Component({
@@ -18,25 +19,26 @@ import { LocalStorageService } from '../../services/localStorage.service';
   styleUrl: './home.component.scss',
 })
 export class HomeComponent implements OnInit {
-  protected answer = '';
-
   protected tries: {
     numbers: string[];
     correctPositionCount: number;
     wrongPositionCount: number;
   }[] = [];
 
+  protected answer = '';
   protected inputOnFocus: string = 'number1';
   protected correct: boolean = false;
   protected submitted: boolean = false;
   protected formGroup: FormGroup;
 
-  protected localStorageModel: LocalStorageModel;
+  protected localStorageModel: LocalStorageModel | null = null;
+  protected enableLocalStorage = true;
 
   constructor(
     route: ActivatedRoute,
     router: Router,
     fb: FormBuilder,
+    cryptoService: CryptoService,
     private service: LocalStorageService
   ) {
     this.formGroup = fb.group({
@@ -46,35 +48,45 @@ export class HomeComponent implements OnInit {
       number4: fb.control('', [Validators.required, Validators.maxLength(1)]),
     });
 
-    const currentDate = new Date();
-    let year = currentDate.getFullYear();
-    let month = currentDate.getMonth() + 1;
-    let day = currentDate.getDate();
+    if (router.url.includes('friend')) {
+      this.enableLocalStorage = false;
+      const code = route.snapshot.queryParamMap.get('code');
+      if (!code) router.navigate(['/']);
 
-    // if (router.url.includes('previous')) {
-    //   year = Number(route.snapshot.paramMap.get('year'));
-    //   month = Number(route.snapshot.paramMap.get('month'));
-    //   day = Number(route.snapshot.paramMap.get('day'));
-    // }
+      this.answer = cryptoService.decrypt(code!);
+    } else {
+      const currentDate = new Date();
+      let year = currentDate.getFullYear();
+      let month = currentDate.getMonth() + 1;
+      let day = currentDate.getDate();
 
-    this.setAnswer(year, month, day);
-    this.localStorageModel = this.service.get();
+      // if (router.url.includes('previous')) {
+      //   year = Number(route.snapshot.paramMap.get('year'));
+      //   month = Number(route.snapshot.paramMap.get('month'));
+      //   day = Number(route.snapshot.paramMap.get('day'));
+      // }
+
+      this.setAnswer(year, month, day);
+      if (this.enableLocalStorage) this.localStorageModel = this.service.get();
+    }
   }
 
   ngOnInit(): void {
     const today = new Date();
     today.setHours(0, 0, 0, 0);
 
-    if (this.localStorageModel.stats.lastGame != today.toISOString()) {
-      this.localStorageModel.stats.totalGame += 1;
-      this.localStorageModel.stats.lastGame = today.toISOString();
-      this.localStorageModel.tries = [];
-      this.service.save(this.localStorageModel);
-    }
+    if (this.enableLocalStorage) {
+      if (this.localStorageModel!.stats.lastGame != today.toISOString()) {
+        this.localStorageModel!.stats.totalGame += 1;
+        this.localStorageModel!.stats.lastGame = today.toISOString();
+        this.localStorageModel!.tries = [];
+        this.service.save(this.localStorageModel!);
+      }
 
-    this.localStorageModel.tries.forEach((curtry) => {
-      this.checkAnswer(curtry.join(''));
-    });
+      this.localStorageModel!.tries.forEach((curtry) => {
+        this.checkAnswer(curtry.join(''));
+      });
+    }
   }
 
   @HostListener('document:keydown', ['$event'])
@@ -126,7 +138,7 @@ export class HomeComponent implements OnInit {
     console.log(this.answer);
   }
 
-  private checkAnswer(currentAnswer: string): boolean {
+  private checkAnswer(currentAnswer: string) {
     const currentTry: {
       numbers: string[];
       correctPositionCount: number;
@@ -167,7 +179,7 @@ export class HomeComponent implements OnInit {
 
     this.tries.push(currentTry);
 
-    return this.answer.length === currentTry.correctPositionCount;
+    this.correct = this.answer.length === currentTry.correctPositionCount;
   }
 
   protected isValid(fieldName: string): boolean {
@@ -178,15 +190,17 @@ export class HomeComponent implements OnInit {
     this.submitted = true;
     if (this.formGroup.valid) {
       const values = Object.values(this.formGroup.value).map((x) => String(x));
-      this.correct = this.checkAnswer(values.join(''));
+      this.checkAnswer(values.join(''));
 
-      this.localStorageModel.tries.push(values);
+      if (this.enableLocalStorage) {
+        this.localStorageModel!.tries.push(values);
 
-      if (this.correct) {
-        this.localStorageModel.stats.totalWin += 1;
+        if (this.correct) {
+          this.localStorageModel!.stats.totalWin += 1;
+        }
+
+        this.service.save(this.localStorageModel!);
       }
-
-      this.service.save(this.localStorageModel);
 
       this.submitted = false;
       this.formGroup.reset();
@@ -195,6 +209,15 @@ export class HomeComponent implements OnInit {
         this.goToBottom();
       }, 100);
     }
+  }
+
+  protected get winPorcentage(): string {
+    const value =
+      (this.localStorageModel!.stats.totalWin /
+        this.localStorageModel!.stats.totalGame) *
+      100;
+
+    return value.toFixed(2);
   }
 
   goToBottom() {
