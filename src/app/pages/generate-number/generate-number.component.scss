@@ -1,6 +1,7 @@
 .custom-input {
   @apply w-14 h-14;
-  @apply text-5xl font-semibold;
+  @apply text-3xl md:text-5xl;
+  @apply font-semibold;
   @apply text-center;
   @apply align-top;
   @apply pb-1;
