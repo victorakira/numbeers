@@ -1,55 +1,69 @@
 <div class="flex flex-col items-center justify-start">
-  <form class="flex flex-col" [formGroup]="formGroup" (ngSubmit)="send()">
+  <form class="flex flex-col">
     <div class="flex">
-      <input
-        type="text"
-        class="cursor-pointer custom-input"
-        maxlength="1"
-        formControlName="number1"
-        [required]="!isValid('number1') && submitted"
+      <div
+        class="custom-span"
+        [ngClass]="{ 'custom-span-edit': inputOnFocus == 'number1' }"
         (click)="inputClick('number1')"
-        [ngClass]="{ 'custom-input-focus': inputOnFocus == 'number1' }"
-      />
-      <input
-        type="text"
-        class="cursor-pointer custom-input"
-        maxlength="1"
-        formControlName="number2"
-        [required]="!isValid('number2') && submitted"
+      >
+        {{ getValue("number1") }}
+      </div>
+      <div
+        class="custom-span"
+        [ngClass]="{ 'custom-span-edit': inputOnFocus == 'number2' }"
         (click)="inputClick('number2')"
-        [ngClass]="{ 'custom-input-focus': inputOnFocus == 'number2' }"
-      />
-      <input
-        type="text"
-        class="cursor-pointer custom-input"
-        maxlength="1"
-        formControlName="number3"
-        [required]="!isValid('number3') && submitted"
+      >
+        {{ getValue("number2") }}
+      </div>
+      <div
+        class="custom-span"
+        [ngClass]="{ 'custom-span-edit': inputOnFocus == 'number3' }"
         (click)="inputClick('number3')"
-        [ngClass]="{ 'custom-input-focus': inputOnFocus == 'number3' }"
-      />
-      <input
-        type="text"
-        class="cursor-pointer custom-input"
-        maxlength="1"
-        formControlName="number4"
-        [required]="!isValid('number4') && submitted"
+      >
+        {{ getValue("number3") }}
+      </div>
+      <div
+        class="custom-span"
+        [ngClass]="{ 'custom-span-edit': inputOnFocus == 'number4' }"
         (click)="inputClick('number4')"
-        [ngClass]="{ 'custom-input-focus': inputOnFocus == 'number4' }"
-      />
+      >
+        {{ getValue("number4") }}
+      </div>
     </div>
     <button
       class="py-3 my-4 text-2xl font-semibold uppercase bg-orange-500 rounded-lg text-orange-50 hover:bg-orange-400"
-      type="submit"
+      type="button"
+      (click)="send()"
     >
-      G e n e r a t e
+      g e n e r a t e
     </button>
   </form>
+
+  <div class="flex flex-col">
+    <div class="flex">
+      <button class="button-number" (click)="buttonClick('1')">1</button>
+      <button class="button-number" (click)="buttonClick('2')">2</button>
+      <button class="button-number" (click)="buttonClick('3')">3</button>
+      <button class="button-number" (click)="buttonClick('4')">4</button>
+      <button class="button-number" (click)="buttonClick('5')">5</button>
+    </div>
+    <div class="flex">
+      <button class="button-number" (click)="buttonClick('6')">6</button>
+      <button class="button-number" (click)="buttonClick('7')">7</button>
+      <button class="button-number" (click)="buttonClick('8')">8</button>
+      <button class="button-number" (click)="buttonClick('9')">9</button>
+      <button class="button-number" (click)="buttonClick('0')">0</button>
+    </div>
+  </div>
+
   @if(link){
   <div class="flex flex-col items-center justify-center text-orange-600">
     <span>Send this link to your friend</span>
     <span>(click to copy)</span>
     <button (click)="copy()" class="underline">{{ link }}</button>
+    @if(copied) {
+    <span>link copied!</span>
+    }
   </div>
   }
 </div>

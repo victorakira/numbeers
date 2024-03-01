@@ -1,36 +1,16 @@
-.custom-input {
-  @apply w-16 h-16;
-  @apply text-3xl md:text-5xl;
-  @apply font-semibold;
-  @apply text-center;
-  @apply align-top;
-  @apply mx-1.5;
-  @apply rounded;
-  @apply caret-transparent;
-  @apply selection:text-orange-500;
-
-  @apply text-orange-500;
-  @apply border-0 outline-none;
-  @apply ring-4 ring-orange-500;
-  @apply disabled:bg-orange-200/60;
-  @apply required:ring-red-600;
-}
-
-.custom-input-focus {
-  @apply border-b-4 border-orange-500;
-}
-
 .custom-span {
-  @apply inline-flex;
+  @apply flex;
   @apply items-center justify-center;
-  @apply w-16 h-16 min-w-16 min-h-16;
+  @apply w-14 h-14 min-w-14 min-h-14;
   @apply text-orange-500;
   @apply border-4 border-orange-500;
-  @apply text-5xl;
+  @apply text-3xl;
   @apply font-semibold;
   @apply rounded-lg;
   @apply bg-white;
   @apply mx-0.5;
+  @apply cursor-pointer;
+  @apply select-none;
 }
 
 .custom-span-edit {
@@ -39,4 +19,15 @@
 
 .custom-span-disabled {
   @apply bg-orange-200/60;
+  @apply cursor-default;
+}
+
+.button-number {
+  @apply w-12 h-12;
+  @apply m-1;
+  @apply text-2xl;
+  @apply text-orange-50;
+  @apply text-center align-middle;
+  @apply bg-orange-500  hover:bg-orange-400;
+  @apply rounded-lg;
 }

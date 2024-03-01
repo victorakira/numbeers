@@ -1,40 +1,35 @@
 import { CommonModule } from '@angular/common';
 import { Component, HostListener } from '@angular/core';
-import {
-  FormBuilder,
-  FormGroup,
-  ReactiveFormsModule,
-  Validators,
-} from '@angular/forms';
 import { CryptoService } from '../../services/crypto.service';
 
 @Component({
   selector: 'app-generate-number',
   standalone: true,
-  imports: [ReactiveFormsModule, CommonModule],
+  imports: [CommonModule],
   templateUrl: './generate-number.component.html',
   styleUrl: './generate-number.component.scss',
 })
 export class GenerateNumberComponent {
+  protected numbers: { [name: string]: string } = {
+    number1: '',
+    number2: '',
+    number3: '',
+    number4: '',
+  };
+
   protected inputOnFocus: string = 'number1';
   protected submitted: boolean = false;
-  protected formGroup: FormGroup;
+  protected copied: boolean = false;
   protected link: string = '';
 
-  constructor(fb: FormBuilder, private cryptoService: CryptoService) {
-    this.formGroup = fb.group({
-      number1: fb.control('', [Validators.required, Validators.maxLength(1)]),
-      number2: fb.control('', [Validators.required, Validators.maxLength(1)]),
-      number3: fb.control('', [Validators.required, Validators.maxLength(1)]),
-      number4: fb.control('', [Validators.required, Validators.maxLength(1)]),
-    });
-  }
+  constructor(private cryptoService: CryptoService) {}
 
   @HostListener('document:keydown', ['$event'])
-  protected onKeyDown(event: any): boolean {
+  protected onKeyDown(event: any) {
     switch (event.key) {
       case 'Backspace':
-        this.formGroup.controls[this.inputOnFocus].reset();
+      case 'Delete':
+        this.numbers[this.inputOnFocus] = '';
         break;
       case 'Tab':
         this.nextFocus(this.inputOnFocus);
@@ -44,13 +39,11 @@ export class GenerateNumberComponent {
         break;
       default:
         if (!isNaN(Number(event.key))) {
-          this.formGroup.controls[this.inputOnFocus].setValue(event.key);
+          this.numbers[this.inputOnFocus] = event.key;
           this.nextFocus(this.inputOnFocus);
-          return true;
         }
+        break;
     }
-
-    return false;
   }
 
   protected inputClick(controlName: string) {
@@ -58,13 +51,13 @@ export class GenerateNumberComponent {
   }
 
   protected buttonClick(value: string) {
-    this.formGroup.controls[this.inputOnFocus].setValue(value);
+    this.numbers[this.inputOnFocus] = value;
 
     this.nextFocus(this.inputOnFocus);
   }
 
   protected nextFocus(currentElement: string) {
-    const keys = Object.keys(this.formGroup.controls);
+    const keys = Object.keys(this.numbers);
     const currentIndex = keys.indexOf(currentElement);
     const nextIndex = currentIndex + 1 > keys.length - 1 ? 0 : currentIndex + 1;
     const nextKey = keys[nextIndex];
@@ -72,18 +65,24 @@ export class GenerateNumberComponent {
     this.inputOnFocus = nextKey;
   }
 
+  protected getValue(fieldName: string): string {
+    return this.numbers[fieldName];
+  }
+
   protected isValid(fieldName: string): boolean {
-    return this.formGroup.controls[fieldName].valid;
+    return this.numbers[fieldName] !== '';
   }
 
   protected send() {
     this.submitted = true;
-    console.log(window.location);
     this.link = '';
-    if (this.formGroup.valid) {
-      const values = Object.values(this.formGroup.value).map((x) => String(x));
+
+    const values = Object.values(this.numbers).map((x) => String(x));
+    const answer = values.join('');
+
+    if (answer.length === values.length) {
       const baseUrl = window.location.href.replace('/generate-number', '');
-      const code = this.cryptoService.encrypt(values.join(''));
+      const code = this.cryptoService.encrypt(answer);
 
       this.link = `${baseUrl}/friend?code=${code}`;
     }
@@ -98,5 +97,10 @@ export class GenerateNumberComponent {
     textarea.select();
     document.execCommand('copy');
     document.body.removeChild(textarea);
+    this.copied = true;
+
+    setTimeout(() => {
+      this.copied = false;
+    }, 2000);
   }
 }

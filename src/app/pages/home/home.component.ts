@@ -1,11 +1,6 @@
 import { CommonModule } from '@angular/common';
 import { Component, HostListener, OnInit } from '@angular/core';
-import {
-  FormBuilder,
-  FormGroup,
-  ReactiveFormsModule,
-  Validators,
-} from '@angular/forms';
+import { FormBuilder } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
 import { LocalStorageModel } from '../../models/localStorageModel';
 import { CryptoService } from '../../services/crypto.service';
@@ -14,7 +9,7 @@ import { LocalStorageService } from '../../services/localStorage.service';
 @Component({
   selector: 'app-home',
   standalone: true,
-  imports: [ReactiveFormsModule, CommonModule],
+  imports: [CommonModule],
   templateUrl: './home.component.html',
   styleUrl: './home.component.scss',
 })
@@ -25,11 +20,17 @@ export class HomeComponent implements OnInit {
     wrongPositionCount: number;
   }[] = [];
 
+  protected numbers: { [name: string]: string } = {
+    number1: '',
+    number2: '',
+    number3: '',
+    number4: '',
+  };
+
   protected answer = '';
   protected inputOnFocus: string = 'number1';
   protected correct: boolean = false;
   protected submitted: boolean = false;
-  protected formGroup: FormGroup;
 
   protected localStorageModel: LocalStorageModel | null = null;
   protected enableLocalStorage = true;
@@ -41,13 +42,6 @@ export class HomeComponent implements OnInit {
     cryptoService: CryptoService,
     private service: LocalStorageService
   ) {
-    this.formGroup = fb.group({
-      number1: fb.control('', [Validators.required, Validators.maxLength(1)]),
-      number2: fb.control('', [Validators.required, Validators.maxLength(1)]),
-      number3: fb.control('', [Validators.required, Validators.maxLength(1)]),
-      number4: fb.control('', [Validators.required, Validators.maxLength(1)]),
-    });
-
     if (router.url.includes('friend')) {
       this.enableLocalStorage = false;
       const code = route.snapshot.queryParamMap.get('code');
@@ -90,10 +84,11 @@ export class HomeComponent implements OnInit {
   }
 
   @HostListener('document:keydown', ['$event'])
-  protected onKeyDown(event: any): boolean {
+  protected onKeyDown(event: any) {
     switch (event.key) {
       case 'Backspace':
-        this.formGroup.controls[this.inputOnFocus].reset();
+      case 'Delete':
+        this.numbers[this.inputOnFocus] = '';
         break;
       case 'Tab':
         this.nextFocus(this.inputOnFocus);
@@ -103,13 +98,11 @@ export class HomeComponent implements OnInit {
         break;
       default:
         if (!isNaN(Number(event.key))) {
-          this.formGroup.controls[this.inputOnFocus].setValue(event.key);
+          this.numbers[this.inputOnFocus] = event.key;
           this.nextFocus(this.inputOnFocus);
-          return true;
         }
+        break;
     }
-
-    return false;
   }
 
   protected inputClick(controlName: string) {
@@ -117,13 +110,13 @@ export class HomeComponent implements OnInit {
   }
 
   protected buttonClick(value: string) {
-    this.formGroup.controls[this.inputOnFocus].setValue(value);
+    this.numbers[this.inputOnFocus] = value;
 
     this.nextFocus(this.inputOnFocus);
   }
 
   protected nextFocus(currentElement: string) {
-    const keys = Object.keys(this.formGroup.controls);
+    const keys = Object.keys(this.numbers);
     const currentIndex = keys.indexOf(currentElement);
     const nextIndex = currentIndex + 1 > keys.length - 1 ? 0 : currentIndex + 1;
     const nextKey = keys[nextIndex];
@@ -181,32 +174,41 @@ export class HomeComponent implements OnInit {
     this.correct = this.answer.length === currentTry.correctPositionCount;
   }
 
+  protected getValue(fieldName: string): string {
+    return this.numbers[fieldName];
+  }
+
   protected isValid(fieldName: string): boolean {
-    return this.formGroup.controls[fieldName].valid;
+    return this.numbers[fieldName] !== '';
   }
 
   protected send() {
     this.submitted = true;
-    if (this.formGroup.valid) {
-      const values = Object.values(this.formGroup.value).map((x) => String(x));
-      this.checkAnswer(values.join(''));
 
+    const values = Object.values(this.numbers).map((x) => String(x));
+    const answer = values.join('');
+
+    if (answer.length === values.length) {
+      this.checkAnswer(answer);
       if (this.enableLocalStorage) {
         this.localStorageModel!.tries.push(values);
-
         if (this.correct) {
           this.localStorageModel!.stats.totalWin += 1;
         }
-
         this.service.save(this.localStorageModel!);
       }
-
       this.submitted = false;
-      this.formGroup.reset();
+      this.clearValues();
       this.inputOnFocus = 'number1';
       setTimeout(() => {
         this.goToBottom();
       }, 100);
+    }
+  }
+
+  protected clearValues() {
+    for (const name in this.numbers) {
+      this.numbers[name] = '';
     }
   }
 
@@ -216,7 +218,7 @@ export class HomeComponent implements OnInit {
         this.localStorageModel!.stats.totalGame) *
       100;
 
-    return value.toFixed(2);
+    return value.toFixed(0);
   }
 
   goToBottom() {

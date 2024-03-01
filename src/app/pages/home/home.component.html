@@ -1,84 +1,58 @@
-<div class="flex items-center justify-center mb-5">
-  <span class="custom-span">1</span>
-  <span class="custom-span">2</span>
-  <span class="custom-span">3</span>
-  <span class="custom-span">4</span>
-  <span class="custom-span">5</span>
-  <span class="custom-span">6</span>
-  <span class="custom-span">7</span>
-  <span class="custom-span">8</span>
-  <span class="custom-span custom-span-disabled">9</span>
-  <span class="custom-span custom-span-edit">0</span>
-</div>
-
 <div class="flex flex-col items-center justify-start">
   @for (currentTry of tries; track currentTry) {
 
   <div class="flex flex-col mb-5">
-    1
-    <div class="flex">
+    <div class="flex items-center justify-center">
       @for (number of currentTry.numbers; track number) {
-      <input
-        type="text"
-        class="custom-input"
-        maxlength="1"
-        disabled
-        [value]="number"
-      />
+      <div class="custom-span custom-span-disabled">{{ number }}</div>
       }
     </div>
-    <span class="mx-4 mt-1.5 text-xl">
+    <span class="mx-4 mt-1.5 text-xl text-nowrap">
       &#8226; {{ currentTry.correctPositionCount }} in the correct position
     </span>
-    <span class="mx-4 text-xl">
+    <span class="mx-4 text-xl text-nowrap">
       &#8226; {{ currentTry.wrongPositionCount }} in the wrong position
     </span>
   </div>
+
   }
   <div class="flex flex-col">
     @if(!correct){
-    <form class="flex flex-col" [formGroup]="formGroup" (ngSubmit)="send()">
+    <form class="flex flex-col">
       <div class="flex">
-        <input
-          type="text"
-          class="cursor-pointer custom-input"
-          maxlength="1"
-          formControlName="number1"
-          [required]="!isValid('number1') && submitted"
+        <div
+          class="custom-span"
+          [ngClass]="{ 'custom-span-edit': inputOnFocus == 'number1' }"
           (click)="inputClick('number1')"
-          [ngClass]="{ 'custom-input-focus': inputOnFocus == 'number1' }"
-        />
-        <input
-          type="text"
-          class="cursor-pointer custom-input"
-          maxlength="1"
-          formControlName="number2"
-          [required]="!isValid('number2') && submitted"
+        >
+          {{ getValue("number1") }}
+        </div>
+        <div
+          class="custom-span"
+          [ngClass]="{ 'custom-span-edit': inputOnFocus == 'number2' }"
           (click)="inputClick('number2')"
-          [ngClass]="{ 'custom-input-focus': inputOnFocus == 'number2' }"
-        />
-        <input
-          type="text"
-          class="cursor-pointer custom-input"
-          maxlength="1"
-          formControlName="number3"
-          [required]="!isValid('number3') && submitted"
+        >
+          {{ getValue("number2") }}
+        </div>
+        <div
+          class="custom-span"
+          [ngClass]="{ 'custom-span-edit': inputOnFocus == 'number3' }"
           (click)="inputClick('number3')"
-          [ngClass]="{ 'custom-input-focus': inputOnFocus == 'number3' }"
-        />
-        <input
-          type="text"
-          class="cursor-pointer custom-input"
-          maxlength="1"
-          formControlName="number4"
-          [required]="!isValid('number4') && submitted"
+        >
+          {{ getValue("number3") }}
+        </div>
+        <div
+          class="custom-span"
+          [ngClass]="{ 'custom-span-edit': inputOnFocus == 'number4' }"
           (click)="inputClick('number4')"
-          [ngClass]="{ 'custom-input-focus': inputOnFocus == 'number4' }"
-        />
+        >
+          {{ getValue("number4") }}
+        </div>
       </div>
       <button
         class="py-3 my-4 text-2xl font-semibold uppercase bg-orange-500 rounded-lg text-orange-50 hover:bg-orange-400"
-        type="submit"
+        type="button"
+        (click)="send()"
       >
         S e n d
       </button>
@@ -93,90 +67,40 @@
   @if(!correct){
   <div class="flex flex-col">
     <div class="flex">
-      <button
-        class="w-10 h-10 m-1 text-2xl text-center align-middle bg-orange-500 rounded-lg text-orange-50 hover:bg-orange-400"
-        (click)="buttonClick('1')"
-      >
-        1
-      </button>
-      <button
-        class="w-10 h-10 m-1 text-2xl bg-orange-500 rounded-lg text-orange-50 hover:bg-orange-400"
-        (click)="buttonClick('2')"
-      >
-        2
-      </button>
-      <button
-        class="w-10 h-10 m-1 text-2xl bg-orange-500 rounded-lg text-orange-50 hover:bg-orange-400"
-        (click)="buttonClick('3')"
-      >
-        3
-      </button>
-      <button
-        class="w-10 h-10 m-1 text-2xl bg-orange-500 rounded-lg text-orange-50 hover:bg-orange-400"
-        (click)="buttonClick('4')"
-      >
-        4
-      </button>
-      <button
-        class="w-10 h-10 m-1 text-2xl bg-orange-500 rounded-lg text-orange-50 hover:bg-orange-400"
-        (click)="buttonClick('5')"
-      >
-        5
-      </button>
+      <button class="button-number" (click)="buttonClick('1')">1</button>
+      <button class="button-number" (click)="buttonClick('2')">2</button>
+      <button class="button-number" (click)="buttonClick('3')">3</button>
+      <button class="button-number" (click)="buttonClick('4')">4</button>
+      <button class="button-number" (click)="buttonClick('5')">5</button>
     </div>
     <div class="flex">
-      <button
-        class="w-10 h-10 m-1 text-2xl bg-orange-500 rounded-lg text-orange-50 hover:bg-orange-400"
-        (click)="buttonClick('6')"
-      >
-        6
-      </button>
-      <button
-        class="w-10 h-10 m-1 text-2xl bg-orange-500 rounded-lg text-orange-50 hover:bg-orange-400"
-        (click)="buttonClick('7')"
-      >
-        7
-      </button>
-      <button
-        class="w-10 h-10 m-1 text-2xl bg-orange-500 rounded-lg text-orange-50 hover:bg-orange-400"
-        (click)="buttonClick('8')"
-      >
-        8
-      </button>
-      <button
-        class="w-10 h-10 m-1 text-2xl bg-orange-500 rounded-lg text-orange-50 hover:bg-orange-400"
-        (click)="buttonClick('9')"
-      >
-        9
-      </button>
-      <button
-        class="w-10 h-10 m-1 text-2xl bg-orange-500 rounded-lg text-orange-50 hover:bg-orange-400"
-        (click)="buttonClick('0')"
-      >
-        0
-      </button>
+      <button class="button-number" (click)="buttonClick('6')">6</button>
+      <button class="button-number" (click)="buttonClick('7')">7</button>
+      <button class="button-number" (click)="buttonClick('8')">8</button>
+      <button class="button-number" (click)="buttonClick('9')">9</button>
+      <button class="button-number" (click)="buttonClick('0')">0</button>
     </div>
   </div>
   } @else if(enableLocalStorage) {
-  <div class="flex flex-col p-5 mt-2 text-orange-500 bg-orange-200 rounded-2xl">
-    <span class="mb-3 text-5xl font-semibold text-center">stats</span>
+  <div class="flex flex-col p-3 mt-2 text-orange-500 bg-orange-200 rounded-2xl">
+    <span class="mb-3 text-3xl font-semibold text-center">stats</span>
     <div class="flex">
       <div class="flex flex-col p-3">
-        <span class="text-3xl font-semibold text-center">
+        <span class="text-2xl font-semibold text-center">
           {{ localStorageModel!.stats.totalGame }}
         </span>
         <span class="text-xl">Games</span>
       </div>
 
       <div class="flex flex-col p-3">
-        <span class="text-3xl font-semibold text-center">
-          {{ winPorcentage }}%
+        <span class="text-2xl font-semibold text-center">
+          {{ winPorcentage }} %
         </span>
         <span class="text-xl">Victory</span>
       </div>
 
       <div class="flex flex-col p-3">
-        <span class="text-3xl font-semibold text-center">
+        <span class="text-2xl font-semibold text-center">
           {{ localStorageModel!.stats.totalWin }}
         </span>
         <span class="text-xl">Wins</span>
