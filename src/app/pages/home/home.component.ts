@@ -84,7 +84,7 @@ export class HomeComponent implements OnInit {
   }
 
   @HostListener('document:keydown', ['$event'])
-  protected onKeyDown(event: any) {
+  protected onKeyDown(event: any): boolean {
     switch (event.key) {
       case 'Backspace':
       case 'Delete':
@@ -92,7 +92,7 @@ export class HomeComponent implements OnInit {
         break;
       case 'Tab':
         this.nextFocus(this.inputOnFocus);
-        break;
+        return false;
       case 'Enter':
         this.send();
         break;
@@ -103,6 +103,8 @@ export class HomeComponent implements OnInit {
         }
         break;
     }
+
+    return true;
   }
 
   protected inputClick(controlName: string) {

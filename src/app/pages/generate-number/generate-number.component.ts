@@ -25,7 +25,7 @@ export class GenerateNumberComponent {
   constructor(private cryptoService: CryptoService) {}
 
   @HostListener('document:keydown', ['$event'])
-  protected onKeyDown(event: any) {
+  protected onKeyDown(event: any): boolean {
     switch (event.key) {
       case 'Backspace':
       case 'Delete':
@@ -33,7 +33,7 @@ export class GenerateNumberComponent {
         break;
       case 'Tab':
         this.nextFocus(this.inputOnFocus);
-        break;
+        return false;
       case 'Enter':
         this.send();
         break;
@@ -44,6 +44,8 @@ export class GenerateNumberComponent {
         }
         break;
     }
+
+    return true;
   }
 
   protected inputClick(controlName: string) {
