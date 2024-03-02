@@ -127,9 +127,17 @@ export class HomeComponent implements OnInit {
   }
 
   private setAnswer(year: number, month: number, day: number) {
-    const seed = new Date(year, month - 1, day).getTime();
-    const randomNumber = Math.floor(Math.abs(Math.sin(seed) * 10000)) % 10000;
-    this.answer = randomNumber.toString();
+    const size = 4;
+    let seed = new Date(year, month - 1, day).getTime();
+    let randomNumber = '';
+
+    while (randomNumber.length < size) {
+      const digit = Math.floor(Math.abs(Math.sin(seed++) * 10));
+      if (!randomNumber.includes(digit.toString())) {
+        randomNumber += digit.toString();
+      }
+    }
+    this.answer = randomNumber;
   }
 
   private checkAnswer(currentAnswer: string) {
@@ -143,32 +151,12 @@ export class HomeComponent implements OnInit {
       wrongPositionCount: 0,
     };
 
-    const counter: { [id: string]: number } = {};
-
-    for (const num of this.answer) {
-      counter[num] = (counter[num] || 0) + 1;
-    }
-
     for (let index = 0; index < currentAnswer.length; index++) {
       const current = currentAnswer[index];
 
-      if (counter[current] <= 0) continue;
-
-      if (current === this.answer[index]) {
-        currentTry.correctPositionCount += 1;
-        counter[current] -= 1;
-      }
-    }
-
-    for (let index = 0; index < currentAnswer.length; index++) {
-      const current = currentAnswer[index];
-
-      if (counter[current] <= 0) continue;
-
-      if (this.answer.includes(current)) {
+      if (this.answer[index] === current) currentTry.correctPositionCount += 1;
+      else if (this.answer.includes(current))
         currentTry.wrongPositionCount += 1;
-        counter[current] -= 1;
-      }
     }
 
     this.tries.push(currentTry);
