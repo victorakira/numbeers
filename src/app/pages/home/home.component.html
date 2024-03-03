@@ -94,6 +94,13 @@
 
       <div class="flex flex-col p-3">
         <span class="text-2xl font-semibold text-center">
+          {{ localStorageModel!.stats.totalWin }}
+        </span>
+        <span class="text-xl">Wins</span>
+      </div>
+
+      <div class="flex flex-col p-3">
+        <span class="text-2xl font-semibold text-center">
           {{ winPorcentage }} %
         </span>
         <span class="text-xl">Victory</span>
@@ -101,9 +108,9 @@
 
       <div class="flex flex-col p-3">
         <span class="text-2xl font-semibold text-center">
-          {{ localStorageModel!.stats.totalWin }}
+          {{ totalAttempts }}
         </span>
-        <span class="text-xl">Wins</span>
+        <span class="text-xl">Attempts</span>
       </div>
     </div>
   </div>

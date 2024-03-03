@@ -15,9 +15,9 @@ export const routes: Routes = [
     path: 'generate-number',
     component: GenerateNumberComponent,
   },
-  // {
-  //   path: 'previous/:year/:month/:day',
-  //   component: HomeComponent,
-  // },
+  {
+    path: 'previous/:year/:month/:day',
+    component: HomeComponent,
+  },
   { path: '**', redirectTo: '/' },
 ];

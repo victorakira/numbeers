@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { LocalStorageModel } from '../models/localStorageModel';
+import { GameModel, LocalStorageModel } from '../models/localStorageModel';
 
 @Injectable({
   providedIn: 'root',
@@ -9,8 +9,26 @@ export class LocalStorageService {
 
   get(): LocalStorageModel {
     const item = localStorage.getItem('app');
-    if (item) return JSON.parse(item) as LocalStorageModel;
-    return new LocalStorageModel();
+    const localStorageModel = new LocalStorageModel();
+
+    if (item) {
+      const data = JSON.parse(item);
+
+      localStorageModel.stats.totalGame = data.stats.totalGame;
+      localStorageModel.stats.totalWin = data.stats.totalWin;
+      localStorageModel.stats.winStreak = data.stats.winStreak;
+
+      data.games.forEach((gameData: any) => {
+        const game = new GameModel(new Date(gameData.date));
+        gameData.attempts.forEach((attempt: string[]) => {
+          game.addAttempt(attempt);
+        });
+        game.status = gameData.status;
+        localStorageModel.games.push(game);
+      });
+    }
+
+    return localStorageModel;
   }
 
   save(model: LocalStorageModel) {
