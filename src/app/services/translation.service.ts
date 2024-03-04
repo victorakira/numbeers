@@ -73,4 +73,5 @@ export type FieldTranslation =
   | 'wins'
   | 'victory'
   | 'customgame'
-  | 'settings';
+  | 'settings'
+  | 'language';

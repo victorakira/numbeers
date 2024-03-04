@@ -13,6 +13,8 @@ import {
   styleUrl: './home.component.scss',
 })
 export class HomeComponent {
+  showSettings = false;
+
   constructor(private translation: TranslationService) {}
 
   translate(field: FieldTranslation, defaultValue: string): string {
@@ -29,5 +31,18 @@ export class HomeComponent {
     const language = this.translation.getLanguage();
 
     return new Date().toLocaleDateString(language, options);
+  }
+
+  protected toggleSettings() {
+    this.showSettings = !this.showSettings;
+  }
+
+  protected get currentLanguage(): string {
+    return this.translation.getLanguage();
+  }
+
+  protected changeLanguage(language: string) {
+    this.translation.changeLanguague(language);
+    this.toggleSettings();
   }
 }
