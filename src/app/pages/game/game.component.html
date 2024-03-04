@@ -7,10 +7,10 @@
       <div class="custom-span custom-span-disabled">{{ number }}</div>
       }
     </div>
-    <span class="mx-4 mt-1.5 text-xl text-nowrap text-orange-500">
+    <span class="mx-4 mt-1.5 text-xl text-nowrap">
       &#8226; {{ currentTry.correctPositionCount }} in the correct position
     </span>
-    <span class="mx-4 text-xl text-orange-500 text-nowrap">
+    <span class="mx-4 text-xl text-nowrap">
       &#8226; {{ currentTry.wrongPositionCount }} in the wrong position
     </span>
   </div>
@@ -50,7 +50,7 @@
         </div>
       </div>
       <button
-        class="py-3 my-4 text-2xl font-semibold uppercase bg-orange-500 rounded-lg text-orange-50 hover:bg-orange-400"
+        class="py-3 my-4 text-2xl font-semibold uppercase rounded-lg bg-purple-heart-500 hover:bg-purple-heart-400 hover:text-purple-heart-600"
         type="button"
         (click)="send()"
       >
@@ -58,8 +58,7 @@
       </button>
     </form>
     } @else {
-    <span
-      class="px-5 py-3 mt-5 text-4xl font-bold text-center bg-orange-500 animate-bounce text-orange-50 rounded-xl"
+    <span class="px-5 py-3 mt-2 text-4xl font-bold text-center animate-bounce"
       >Victory!</span
     >
     }
@@ -82,7 +81,9 @@
     </div>
   </div>
   } @else if(enableLocalStorage) {
-  <div class="flex flex-col p-3 mt-2 text-orange-500 bg-orange-200 rounded-2xl">
+  <div
+    class="flex flex-col p-3 mt-2 rounded-2xl bg-purple-heart-500 text-purple-heart-100"
+  >
     <span class="mb-3 text-3xl font-semibold text-center">stats</span>
     <div class="flex">
       <div class="flex flex-col p-3">

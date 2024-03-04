@@ -6,31 +6,32 @@ body {
   font-family: "Candal", sans-serif;
   @apply cursor-default;
   @apply select-none;
-  @apply text-orange-500;
-  @apply bg-orange-100;
+  @apply text-purple-heart-200;
+  @apply bg-purple-heart-950;
 }
 
 .custom-span {
   @apply flex;
   @apply items-center justify-center;
   @apply w-14 h-14 min-w-14 min-h-14;
-  @apply text-orange-500;
-  @apply border-4 border-orange-500;
+  @apply border-4 border-purple-heart-600;
+  @apply text-purple-heart-600;
   @apply text-3xl;
   @apply font-semibold;
   @apply rounded-lg;
-  @apply bg-white;
+  @apply bg-purple-heart-100;
   @apply mx-0.5;
   @apply cursor-pointer;
   @apply select-none;
 }
 
 .custom-span-edit {
-  @apply border-b-8 border-orange-500;
+  @apply border-b-8;
 }
 
 .custom-span-disabled {
-  @apply bg-orange-200/60;
+  @apply bg-purple-heart-500;
+  @apply text-purple-heart-100;
   @apply cursor-default;
 }
 
@@ -38,9 +39,8 @@ body {
   @apply w-12 h-12;
   @apply m-1;
   @apply text-2xl;
-  @apply text-orange-50;
   @apply text-center align-middle;
-  @apply bg-orange-500  hover:bg-orange-400;
+  @apply bg-purple-heart-500 hover:bg-purple-heart-400 hover:text-purple-heart-600;
   @apply rounded-lg;
 }
 

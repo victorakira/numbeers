@@ -31,7 +31,7 @@
       </div>
     </div>
     <button
-      class="py-3 my-4 text-2xl font-semibold uppercase bg-orange-500 rounded-lg text-orange-50 hover:bg-orange-400"
+      class="py-3 my-4 text-2xl font-semibold uppercase rounded-lg bg-purple-heart-500 hover:bg-purple-heart-400 hover:text-purple-heart-600"
       type="button"
       (click)="send()"
     >
@@ -57,7 +57,7 @@
   </div>
 
   @if(link){
-  <div class="flex flex-col items-center justify-center text-orange-600">
+  <div class="flex flex-col items-center justify-center">
     <span>Send this link to your friend</span>
     <span>(click to copy)</span>
     <button (click)="copy()" class="underline">{{ link }}</button>
