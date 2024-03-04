@@ -32,7 +32,17 @@ export class GenerateNumberComponent {
         this.numbers[this.inputOnFocus] = '';
         break;
       case 'Tab':
-        this.nextFocus(this.inputOnFocus);
+        if (event.shiftKey) {
+          this.changeFocus(this.inputOnFocus, 'prev');
+        } else {
+          this.changeFocus(this.inputOnFocus, 'next');
+        }
+        return false;
+      case 'ArrowRight':
+        this.changeFocus(this.inputOnFocus, 'next');
+        return false;
+      case 'ArrowLeft':
+        this.changeFocus(this.inputOnFocus, 'prev');
         return false;
       case 'Enter':
         this.send();
@@ -40,7 +50,7 @@ export class GenerateNumberComponent {
       default:
         if (!isNaN(Number(event.key))) {
           this.numbers[this.inputOnFocus] = event.key;
-          this.nextFocus(this.inputOnFocus);
+          this.changeFocus(this.inputOnFocus, 'next');
         }
         break;
     }
@@ -55,13 +65,20 @@ export class GenerateNumberComponent {
   protected buttonClick(value: string) {
     this.numbers[this.inputOnFocus] = value;
 
-    this.nextFocus(this.inputOnFocus);
+    this.changeFocus(this.inputOnFocus, 'next');
   }
 
-  protected nextFocus(currentElement: string) {
+  private changeFocus(currentElement: string, direction: 'next' | 'prev') {
     const keys = Object.keys(this.numbers);
     const currentIndex = keys.indexOf(currentElement);
-    const nextIndex = currentIndex + 1 > keys.length - 1 ? 0 : currentIndex + 1;
+    let nextIndex = 0;
+
+    if (direction == 'next') {
+      nextIndex = (currentIndex + 1) % keys.length;
+    } else {
+      nextIndex = (currentIndex - 1 + keys.length) % keys.length;
+    }
+
     const nextKey = keys[nextIndex];
 
     this.inputOnFocus = nextKey;
