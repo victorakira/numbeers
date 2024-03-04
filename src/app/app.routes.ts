@@ -5,26 +5,11 @@ import { HomeComponent } from './pages/home/home.component';
 import { PreviousGamesComponent } from './pages/previous-games/previous-games.component';
 
 export const routes: Routes = [
-  {
-    path: '',
-    component: HomeComponent,
-  },
-
-  {
-    path: 'generate-number',
-    component: GenerateNumberComponent,
-  },
-  {
-    path: 'game',
-    component: GameComponent,
-    children: [
-      { path: 'previous/:year/:month/:day', component: GameComponent },
-      { path: 'friend', component: GameComponent },
-    ],
-  },
-  {
-    path: 'calendar',
-    component: PreviousGamesComponent,
-  },
+  { path: '', component: HomeComponent },
+  { path: 'generate-number', component: GenerateNumberComponent },
+  { path: 'game', component: GameComponent },
+  { path: 'game/previous/:year/:month/:day', component: GameComponent },
+  { path: 'game/friend', component: GameComponent },
+  { path: 'calendar', component: PreviousGamesComponent },
   { path: '**', redirectTo: '/' },
 ];
