@@ -1,118 +1,35 @@
-<div class="flex flex-col items-center justify-start">
-  @for (currentTry of tries; track currentTry) {
+<div class="flex flex-col gap-5 justify-center items-center">
+  <span class="text-lg">Find the 4 digits code</span>
 
-  <div class="flex flex-col mb-5">
-    <div class="flex items-center justify-center">
-      @for (number of currentTry.numbers; track number) {
-      <div class="custom-span custom-span-disabled">{{ number }}</div>
-      }
-    </div>
-    <span class="mx-4 mt-1.5 text-xl text-nowrap text-orange-500">
-      &#8226; {{ currentTry.correctPositionCount }} in the correct position
-    </span>
-    <span class="mx-4 text-xl text-orange-500 text-nowrap">
-      &#8226; {{ currentTry.wrongPositionCount }} in the wrong position
-    </span>
-  </div>
-
-  }
-  <div class="flex flex-col">
-    @if(!correct){
-    <form class="flex flex-col">
-      <div class="flex">
-        <div
-          class="custom-span"
-          [ngClass]="{ 'custom-span-edit': inputOnFocus == 'number1' }"
-          (click)="inputClick('number1')"
-        >
-          {{ getValue("number1") }}
-        </div>
-        <div
-          class="custom-span"
-          [ngClass]="{ 'custom-span-edit': inputOnFocus == 'number2' }"
-          (click)="inputClick('number2')"
-        >
-          {{ getValue("number2") }}
-        </div>
-        <div
-          class="custom-span"
-          [ngClass]="{ 'custom-span-edit': inputOnFocus == 'number3' }"
-          (click)="inputClick('number3')"
-        >
-          {{ getValue("number3") }}
-        </div>
-        <div
-          class="custom-span"
-          [ngClass]="{ 'custom-span-edit': inputOnFocus == 'number4' }"
-          (click)="inputClick('number4')"
-        >
-          {{ getValue("number4") }}
-        </div>
-      </div>
-      <button
-        class="py-3 my-4 text-2xl font-semibold uppercase bg-orange-500 rounded-lg text-orange-50 hover:bg-orange-400"
-        type="button"
-        (click)="send()"
-      >
-        S e n d
-      </button>
-    </form>
-    } @else {
-    <span
-      class="px-5 py-3 mt-5 text-4xl font-bold text-center bg-orange-500 animate-bounce text-orange-50 rounded-xl"
-      >Victory!</span
+  <div
+    class="flex justify-between items-center w-full border border-orange-600 rounded-lg p-2"
+  >
+    <span>Daily game</span>
+    <span>03/03/2024</span>
+    <a
+      [routerLink]="['/', 'game']"
+      class="bg-orange-500 text-orange-50 px-2 py-1 rounded"
+      >Play</a
     >
-    }
   </div>
-  @if(!correct){
-  <div class="flex flex-col">
-    <div class="flex">
-      <button class="button-number" (click)="buttonClick('1')">1</button>
-      <button class="button-number" (click)="buttonClick('2')">2</button>
-      <button class="button-number" (click)="buttonClick('3')">3</button>
-      <button class="button-number" (click)="buttonClick('4')">4</button>
-      <button class="button-number" (click)="buttonClick('5')">5</button>
-    </div>
-    <div class="flex">
-      <button class="button-number" (click)="buttonClick('6')">6</button>
-      <button class="button-number" (click)="buttonClick('7')">7</button>
-      <button class="button-number" (click)="buttonClick('8')">8</button>
-      <button class="button-number" (click)="buttonClick('9')">9</button>
-      <button class="button-number" (click)="buttonClick('0')">0</button>
-    </div>
-  </div>
-  } @else if(enableLocalStorage) {
-  <div class="flex flex-col p-3 mt-2 text-orange-500 bg-orange-200 rounded-2xl">
-    <span class="mb-3 text-3xl font-semibold text-center">stats</span>
-    <div class="flex">
-      <div class="flex flex-col p-3">
-        <span class="text-2xl font-semibold text-center">
-          {{ localStorageModel!.stats.totalGame }}
-        </span>
-        <span class="text-xl">Games</span>
-      </div>
 
-      <div class="flex flex-col p-3">
-        <span class="text-2xl font-semibold text-center">
-          {{ localStorageModel!.stats.totalWin }}
-        </span>
-        <span class="text-xl">Wins</span>
-      </div>
-
-      <div class="flex flex-col p-3">
-        <span class="text-2xl font-semibold text-center">
-          {{ winPorcentage }} %
-        </span>
-        <span class="text-xl">Victory</span>
-      </div>
-
-      <div class="flex flex-col p-3">
-        <span class="text-2xl font-semibold text-center">
-          {{ totalAttempts }}
-        </span>
-        <span class="text-xl">Attempts</span>
-      </div>
-    </div>
-  </div>
-  }
+  <a
+    [routerLink]="['/', 'calendar']"
+    class="flex gap-2 rounded-lg hover:bg-orange-200 p-2"
+    ><svg
+      xmlns="http://www.w3.org/2000/svg"
+      fill="none"
+      viewBox="0 0 24 24"
+      stroke-width="1.5"
+      stroke="currentColor"
+      class="w-6 h-6"
+    >
+      <path
+        stroke-linecap="round"
+        stroke-linejoin="round"
+        d="M6.75 3v2.25M17.25 3v2.25M3 18.75V7.5a2.25 2.25 0 0 1 2.25-2.25h13.5A2.25 2.25 0 0 1 21 7.5v11.25m-18 0A2.25 2.25 0 0 0 5.25 21h13.5A2.25 2.25 0 0 0 21 18.75m-18 0v-7.5A2.25 2.25 0 0 1 5.25 9h13.5A2.25 2.25 0 0 1 21 11.25v7.5m-9-6h.008v.008H12v-.008ZM12 15h.008v.008H12V15Zm0 2.25h.008v.008H12v-.008ZM9.75 15h.008v.008H9.75V15Zm0 2.25h.008v.008H9.75v-.008ZM7.5 15h.008v.008H7.5V15Zm0 2.25h.008v.008H7.5v-.008Zm6.75-4.5h.008v.008h-.008v-.008Zm0 2.25h.008v.008h-.008V15Zm0 2.25h.008v.008h-.008v-.008Zm2.25-4.5h.008v.008H16.5v-.008Zm0 2.25h.008v.008H16.5V15Z"
+      />
+    </svg>
+    Previous games</a
+  >
 </div>

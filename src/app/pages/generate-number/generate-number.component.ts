@@ -86,7 +86,7 @@ export class GenerateNumberComponent {
       const baseUrl = window.location.href.replace('/generate-number', '');
       const code = this.cryptoService.encrypt(answer);
 
-      this.link = `${baseUrl}/friend?code=${code}`;
+      this.link = `${baseUrl}/game/friend?code=${code}`;
     }
   }
 

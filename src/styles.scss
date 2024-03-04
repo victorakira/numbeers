@@ -4,6 +4,10 @@
 
 body {
   font-family: "Candal", sans-serif;
+  @apply cursor-default;
+  @apply select-none;
+  @apply text-orange-500;
+  @apply bg-orange-100;
 }
 
 .custom-span {

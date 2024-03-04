@@ -1,0 +1,60 @@
+<div class="flex flex-col items-center justify-center">
+  <div class="flex items-center justify-between w-full">
+    <button (click)="previousMonth()" class="ml-auto">
+      <svg
+        xmlns="http://www.w3.org/2000/svg"
+        fill="none"
+        viewBox="0 0 24 24"
+        stroke-width="1.5"
+        stroke="currentColor"
+        class="w-4 h-4"
+      >
+        <path
+          stroke-linecap="round"
+          stroke-linejoin="round"
+          d="M15.75 19.5 8.25 12l7.5-7.5"
+        />
+      </svg>
+    </button>
+    <div class="w-1/2 text-center text-nowrap">{{ month }}</div>
+    <button (click)="nextMonth()" class="mr-auto">
+      <svg
+        xmlns="http://www.w3.org/2000/svg"
+        fill="none"
+        viewBox="0 0 24 24"
+        stroke-width="1.5"
+        stroke="currentColor"
+        class="w-4 h-4"
+      >
+        <path
+          stroke-linecap="round"
+          stroke-linejoin="round"
+          d="m8.25 4.5 7.5 7.5-7.5 7.5"
+        />
+      </svg>
+    </button>
+  </div>
+
+  <div class="grid grid-cols-7 grid-rows-6 gap-2 text-center">
+    <div>sun</div>
+    <div>mon</div>
+    <div>tue</div>
+    <div>wed</div>
+    <div>thu</div>
+    <div>fri</div>
+    <div>sat</div>
+    @for (day of days; track $index) {
+    <a
+      class="rounded py-1"
+      [routerLink]="getLink(day)"
+      [ngClass]="{
+        'hover:bg-orange-300': getLink(day),
+        'bg-green-500': getStatus(day) === 1,
+        'bg-orange-600': getStatus(day) === 0
+      }"
+    >
+      {{ day }}
+    </a>
+    }
+  </div>
+</div>

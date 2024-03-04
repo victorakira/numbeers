@@ -1,17 +1,20 @@
-<div class="flex flex-col items-center justify-center">
-  <div class="flex justify-center pt-4">
-    <span class="text-5xl font-bold text-orange-500 uppercase">Find Pin</span>
-  </div>
-  <div class="flex justify-center w-3/5 gap-3 pt-2">
-    <a
-      class="text-lg font-semibold text-center text-orange-500 lowercase hover:text-orange-600 hover:underline"
-      [routerLink]="['/']"
-      >Daily game</a
+<div class="flex justify-center p-3">
+  <div class="flex flex-col w-full md:w-1/2 lg:w-1/3 xl:w-1/4">
+    <span class="text-5xl font-bold text-orange-500 uppercase text-center"
+      >Find Pin</span
     >
-    <a
-      class="text-lg font-semibold text-center text-orange-500 lowercase hover:text-orange-600 hover:underline"
-      [routerLink]="['/', 'generate-number']"
-      >Custom game</a
-    >
+
+    <div class="flex justify-evenly w-full flex-wrap">
+      <a
+        class="text-lg font-semibold text-center text-orange-500 lowercase hover:text-orange-600 hover:underline"
+        [routerLink]="['/']"
+        >Daily game</a
+      >
+      <a
+        class="text-lg font-semibold text-center text-orange-500 lowercase hover:text-orange-600 hover:underline"
+        [routerLink]="['/', 'generate-number']"
+        >Custom game</a
+      >
+    </div>
   </div>
 </div>
