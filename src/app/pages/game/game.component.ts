@@ -264,6 +264,18 @@ export class GameComponent implements OnInit {
     return '0';
   }
 
+  protected get formatedDate(): string {
+    const options: Intl.DateTimeFormatOptions = {
+      day: '2-digit',
+      month: '2-digit',
+      year: 'numeric',
+    };
+
+    const language = this.translation.getLanguage();
+
+    return this.currentDate.toLocaleDateString(language, options);
+  }
+
   protected goToBottom() {
     window.scrollTo(0, document.body.scrollHeight);
   }

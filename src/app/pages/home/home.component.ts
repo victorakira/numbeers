@@ -18,4 +18,16 @@ export class HomeComponent {
   translate(field: FieldTranslation, defaultValue: string): string {
     return this.translation.translate(field, defaultValue);
   }
+
+  protected get formatedDate(): string {
+    const options: Intl.DateTimeFormatOptions = {
+      day: '2-digit',
+      month: '2-digit',
+      year: 'numeric',
+    };
+
+    const language = this.translation.getLanguage();
+
+    return new Date().toLocaleDateString(language, options);
+  }
 }
