@@ -3,6 +3,10 @@ import { Component } from '@angular/core';
 import { RouterLink } from '@angular/router';
 import { LocalStorageModel } from '../../models/localStorageModel';
 import { LocalStorageService } from '../../services/localStorage.service';
+import {
+  FieldTranslation,
+  TranslationService,
+} from '../../services/translation.service';
 
 @Component({
   selector: 'app-previous-games',
@@ -16,9 +20,16 @@ export class PreviousGamesComponent {
   days: string[] = [];
   protected localStorageModel: LocalStorageModel;
 
-  constructor(service: LocalStorageService) {
+  constructor(
+    service: LocalStorageService,
+    private translation: TranslationService
+  ) {
     this.generateCalendar();
     this.localStorageModel = service.get();
+  }
+
+  translate(field: FieldTranslation, defaultValue: string): string {
+    return this.translation.translate(field, defaultValue);
   }
 
   protected generateCalendar() {

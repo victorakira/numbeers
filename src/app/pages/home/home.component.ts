@@ -1,6 +1,9 @@
 import { Component } from '@angular/core';
 import { RouterLink } from '@angular/router';
-import { TranslationService } from '../../services/translation.service';
+import {
+  FieldTranslation,
+  TranslationService,
+} from '../../services/translation.service';
 
 @Component({
   selector: 'app-home',
@@ -12,7 +15,7 @@ import { TranslationService } from '../../services/translation.service';
 export class HomeComponent {
   constructor(private translation: TranslationService) {}
 
-  get(field: string): string {
-    return this.translation.translate(field);
+  translate(field: FieldTranslation, defaultValue: string): string {
+    return this.translation.translate(field, defaultValue);
   }
 }

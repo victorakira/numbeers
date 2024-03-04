@@ -1,7 +1,10 @@
 import { CommonModule } from '@angular/common';
 import { Component, HostListener } from '@angular/core';
 import { CryptoService } from '../../services/crypto.service';
-import { TranslationService } from '../../services/translation.service';
+import {
+  FieldTranslation,
+  TranslationService,
+} from '../../services/translation.service';
 
 @Component({
   selector: 'app-generate-number',
@@ -27,6 +30,10 @@ export class GenerateNumberComponent {
     private cryptoService: CryptoService,
     private translation: TranslationService
   ) {}
+
+  translate(field: FieldTranslation, defaultValue: string): string {
+    return this.translation.translate(field, defaultValue);
+  }
 
   @HostListener('document:keydown', ['$event'])
   protected onKeyDown(event: any): boolean {

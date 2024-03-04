@@ -4,6 +4,10 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { LocalStorageModel } from '../../models/localStorageModel';
 import { CryptoService } from '../../services/crypto.service';
 import { LocalStorageService } from '../../services/localStorage.service';
+import {
+  FieldTranslation,
+  TranslationService,
+} from '../../services/translation.service';
 
 @Component({
   selector: 'app-game',
@@ -40,7 +44,8 @@ export class GameComponent implements OnInit {
     route: ActivatedRoute,
     router: Router,
     cryptoService: CryptoService,
-    private service: LocalStorageService
+    private service: LocalStorageService,
+    private translation: TranslationService
   ) {
     this.currentDate = new Date();
     this.currentDate.setHours(0, 0, 0, 0);
@@ -96,6 +101,10 @@ export class GameComponent implements OnInit {
           this.checkAnswer(x.join(''));
         });
     }
+  }
+
+  translate(field: FieldTranslation, defaultValue: string): string {
+    return this.translation.translate(field, defaultValue);
   }
 
   @HostListener('document:keydown', ['$event'])
