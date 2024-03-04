@@ -45,12 +45,13 @@
     <div>sat</div>
     @for (day of days; track $index) {
     <a
-      class="rounded py-1"
+      class="py-1 rounded"
       [routerLink]="getLink(day)"
       [ngClass]="{
-        'hover:bg-orange-300': getLink(day),
-        'bg-green-500': getStatus(day) === 1,
-        'bg-orange-600': getStatus(day) === 0
+        'hover:bg-purple-heart-400': isEnable(day),
+        'text-purple-heart-300': !isEnable(day),
+        'bg-emerald-600': getStatus(day) === 'won',
+        'bg-amber-600': getStatus(day) === 'started'
       }"
     >
       {{ day }}

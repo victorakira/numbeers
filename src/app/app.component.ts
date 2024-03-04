@@ -1,5 +1,6 @@
 import { Component } from '@angular/core';
 import { RouterOutlet } from '@angular/router';
+import { environment } from '../environment/enviroment';
 import { HeaderComponent } from './components/header/header.component';
 
 @Component({
@@ -11,4 +12,8 @@ import { HeaderComponent } from './components/header/header.component';
 })
 export class AppComponent {
   title = 'numbeers';
+
+  constructor() {
+    console.log('version', environment.Version);
+  }
 }

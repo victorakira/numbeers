@@ -103,7 +103,7 @@ export class PreviousGamesComponent {
     return undefined;
   }
 
-  protected getStatus(day: string): number {
+  protected getStatus(day: string): 'won' | 'started' | '' {
     const date = new Date(
       this.currentDate.getFullYear(),
       this.currentDate.getMonth(),
@@ -116,6 +116,17 @@ export class PreviousGamesComponent {
       return game.status;
     }
 
-    return -1;
+    return '';
+  }
+
+  protected isEnable(day: string): boolean {
+    const date = new Date(
+      this.currentDate.getFullYear(),
+      this.currentDate.getMonth(),
+      parseInt(day)
+    );
+    const today = new Date();
+    today.setHours(0, 0, 0, 0);
+    return date.getTime() <= today.getTime();
   }
 }

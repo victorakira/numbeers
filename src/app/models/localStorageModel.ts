@@ -1,6 +1,9 @@
+import { environment } from '../../environment/enviroment';
+
 export class LocalStorageModel {
   games: GameModel[] = [];
   stats: StatsModel = new StatsModel();
+  version: string = environment.Version;
 
   addGame(date: Date) {
     const today = new Date();
@@ -9,7 +12,7 @@ export class LocalStorageModel {
     const game = this.getGame(date);
 
     if (!game) {
-      this.stats.AddTotalGame();
+      this.stats.addTotalGame();
 
       const game = new GameModel(date);
       this.games.push(game);
@@ -21,7 +24,7 @@ export class LocalStorageModel {
       (x) => x.date.getTime() === date.getTime()
     );
 
-    this.games[indexToUpdate].addAttempt(attemp);
+    if (indexToUpdate >= 0) this.games[indexToUpdate].addAttempt(attemp);
   }
 
   win(date: Date) {
@@ -31,7 +34,7 @@ export class LocalStorageModel {
       (x) => x.date.getTime() === date.getTime()
     );
 
-    this.games[indexToUpdate].win();
+    if (indexToUpdate >= 0) this.games[indexToUpdate].win();
   }
 
   getGame(date: Date): GameModel | undefined {
@@ -44,9 +47,8 @@ export class LocalStorageModel {
 export class StatsModel {
   totalGame: number = 0;
   totalWin: number = 0;
-  winStreak: number = 0;
 
-  public AddTotalGame() {
+  public addTotalGame() {
     this.totalGame += 1;
   }
 
@@ -79,6 +81,6 @@ export class GameModel {
 }
 
 export enum GameStatus {
-  started,
-  won,
+  started = 'started',
+  won = 'won',
 }

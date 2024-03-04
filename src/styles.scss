@@ -6,7 +6,7 @@ body {
   font-family: "Candal", sans-serif;
   @apply cursor-default;
   @apply select-none;
-  @apply text-purple-heart-200;
+  @apply text-purple-heart-50;
   @apply bg-purple-heart-950;
 }
 
@@ -40,7 +40,21 @@ body {
   @apply m-1;
   @apply text-2xl;
   @apply text-center align-middle;
-  @apply bg-purple-heart-500 hover:bg-purple-heart-400 hover:text-purple-heart-600;
+  @apply bg-purple-heart-500;
+  @apply hover:bg-purple-heart-400 hover:text-purple-heart-800;
+  @apply rounded-lg;
+}
+
+.button {
+  @apply bg-purple-heart-500;
+  @apply hover:bg-purple-heart-400 hover:text-purple-heart-800;
+  @apply p-2;
+  @apply rounded-lg;
+}
+
+.button-inverse {
+  @apply hover:bg-purple-heart-400 hover:text-purple-heart-800;
+  @apply p-2;
   @apply rounded-lg;
 }
 
