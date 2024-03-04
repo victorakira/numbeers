@@ -57,7 +57,10 @@ export class GameComponent implements OnInit {
         const monthParam = route.snapshot.paramMap.get('month');
         const dayParam = route.snapshot.paramMap.get('day');
 
-        if (!yearParam || !monthParam || !dayParam) router.navigate(['/']);
+        if (!yearParam || !monthParam || !dayParam) {
+          router.navigate(['/']);
+          return;
+        }
 
         const year = parseInt(yearParam!);
         const month = parseInt(monthParam!);
