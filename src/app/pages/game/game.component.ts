@@ -74,7 +74,7 @@ export class GameComponent implements OnInit {
         const dateParam = new Date(year, month - 1, day, 0, 0, 0, 0);
 
         if (dateParam.getTime() >= this.currentDate.getTime()) {
-          router.navigate(['/']);
+          router.navigate(['/', 'game']);
           return;
         }
 

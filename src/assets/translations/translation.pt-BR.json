@@ -1,11 +1,12 @@
 {
+  "gamename": "Find Pin",
   "description": "Encontre o código de 4 digitos",
   "dailygame": "Jogo diário",
   "play": "Jogar",
   "previousgames": "Jogos anteriores",
-  "generate": "Gerar",
+  "create": "Criar",
   "sendlink": "Envie esse link para seu amigo",
-  "copylink": "(clique para copiar)",
+  "copylink": "clique para copiar",
   "copiedlink": "link copiado!",
   "sun": "dom",
   "mon": "seg",
@@ -22,5 +23,6 @@
   "played": "Jogados",
   "wins": "Vitórias",
   "victory": "Vitória",
-  "customgame": "Jogo customizado"
+  "customgame": "Jogo customizado",
+  "settings": "Configurações"
 }

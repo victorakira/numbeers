@@ -1,8 +1,8 @@
 <div class="flex flex-col items-center justify-start">
   <div class="flex gap-5 mb-3">
-    <span>03/03/2024</span>
-    <span>Attempts:</span>
-    <span class="-ml-4">0</span>
+    <span>TODO: 03/03/2024</span>
+    <span>{{ translate("attempts", "Attempts") }}:</span>
+    <span class="-ml-4">{{ totalAttempts }}</span>
   </div>
   @for (currentTry of tries; track currentTry) {
 
@@ -15,11 +15,15 @@
     <div class="flex flex-col mx-4 mt-1.5">
       <div class="flex gap-1 text-xl">
         <span>&#8226; {{ currentTry.correctPositionCount }}</span>
-        <span>in the correct position</span>
+        <span>
+          {{ translate("correctposition", "in the correct position") }}
+        </span>
       </div>
       <div class="flex gap-1 text-xl">
         <span>&#8226; {{ currentTry.wrongPositionCount }}</span>
-        <span>in the wrong position</span>
+        <span>
+          {{ translate("wrongposition", "in the wrong position") }}
+        </span>
       </div>
     </div>
   </div>
@@ -63,13 +67,13 @@
         type="button"
         (click)="send()"
       >
-        Send
+        {{ translate("send", "Send") }}
       </button>
     </form>
     } @else {
-    <span class="px-5 py-3 mt-2 text-4xl font-bold text-center animate-bounce"
-      >Victory!</span
-    >
+    <span class="px-5 py-3 mt-2 text-4xl font-bold text-center animate-bounce">
+      {{ translate("victory", "Victory") }}!
+    </span>
     }
   </div>
   @if(!correct){
@@ -91,36 +95,38 @@
   </div>
   } @else if(enableLocalStorage) {
   <div
-    class="flex flex-col p-3 mt-2 rounded-2xl bg-purple-heart-500 text-purple-heart-100"
+    class="flex flex-col px-3 py-6 mt-2 rounded-2xl bg-purple-heart-500 text-purple-heart-100"
   >
-    <span class="mb-3 text-3xl font-semibold text-center">stats</span>
+    <span class="mb-3 text-3xl font-semibold text-center lowercase">
+      {{ translate("stats", "stats") }}
+    </span>
     <div class="flex">
-      <div class="flex flex-col p-3">
+      <div class="flex flex-col p-3 lowercase">
         <span class="text-2xl font-semibold text-center">
           {{ localStorageModel!.stats.totalGame }}
         </span>
-        <span class="text-xl">Games</span>
+        <span class="text-xl">{{ translate("played", "Played") }}</span>
       </div>
 
-      <div class="flex flex-col p-3">
+      <div class="flex flex-col p-3 lowercase">
         <span class="text-2xl font-semibold text-center">
           {{ localStorageModel!.stats.totalWin }}
         </span>
-        <span class="text-xl">Wins</span>
+        <span class="text-xl">{{ translate("wins", "wins") }}</span>
       </div>
 
-      <div class="flex flex-col p-3">
+      <div class="flex flex-col p-3 lowercase">
         <span class="text-2xl font-semibold text-center">
           {{ winPorcentage }} %
         </span>
-        <span class="text-xl">Victory</span>
+        <span class="text-xl">{{ translate("wins", "wins") }}</span>
       </div>
 
-      <div class="flex flex-col p-3">
+      <div class="flex flex-col p-3 lowercase">
         <span class="text-2xl font-semibold text-center">
           {{ totalAttempts }}
         </span>
-        <span class="text-xl">Attempts</span>
+        <span class="text-xl">{{ translate("attempts", "Attempts") }}</span>
       </div>
     </div>
   </div>

@@ -15,6 +15,12 @@ export class TranslationService {
     this.changeLanguague(language);
   }
 
+  getLanguage(): string {
+    const language = localStorage.getItem('language') ?? 'en-US';
+
+    return this.getValidLanguage(language);
+  }
+
   async changeLanguague(language: string) {
     language = this.getValidLanguage(language);
 
@@ -42,11 +48,12 @@ export class TranslationService {
 }
 
 export type FieldTranslation =
+  | 'gamename'
   | 'description'
   | 'dailygame'
   | 'play'
   | 'previousgames'
-  | 'generate'
+  | 'create'
   | 'sendlink'
   | 'copylink'
   | 'copiedlink'
@@ -66,4 +73,4 @@ export type FieldTranslation =
   | 'wins'
   | 'victory'
   | 'customgame'
-  | 'teste';
+  | 'settings';

@@ -63,7 +63,10 @@ export class PreviousGamesComponent {
       month: 'long',
       year: 'numeric',
     };
-    return this.currentDate.toLocaleDateString('en-US', options);
+
+    const language = this.translation.getLanguage();
+
+    return this.currentDate.toLocaleDateString(language, options);
   }
 
   protected previousMonth() {

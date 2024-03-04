@@ -36,13 +36,13 @@
   </div>
 
   <div class="grid grid-cols-7 grid-rows-6 gap-2 text-center">
-    <div>sun</div>
-    <div>mon</div>
-    <div>tue</div>
-    <div>wed</div>
-    <div>thu</div>
-    <div>fri</div>
-    <div>sat</div>
+    <div>{{ translate("sun", "sun") }}</div>
+    <div>{{ translate("mon", "mon") }}</div>
+    <div>{{ translate("tue", "tue") }}</div>
+    <div>{{ translate("wed", "wed") }}</div>
+    <div>{{ translate("thu", "thu") }}</div>
+    <div>{{ translate("fri", "fri") }}</div>
+    <div>{{ translate("sat", "sat") }}</div>
     @for (day of days; track $index) {
     <a
       class="py-1 rounded"
