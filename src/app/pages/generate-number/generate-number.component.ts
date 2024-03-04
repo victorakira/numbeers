@@ -1,6 +1,7 @@
 import { CommonModule } from '@angular/common';
 import { Component, HostListener } from '@angular/core';
 import { CryptoService } from '../../services/crypto.service';
+import { TranslationService } from '../../services/translation.service';
 
 @Component({
   selector: 'app-generate-number',
@@ -22,7 +23,10 @@ export class GenerateNumberComponent {
   protected copied: boolean = false;
   protected link: string = '';
 
-  constructor(private cryptoService: CryptoService) {}
+  constructor(
+    private cryptoService: CryptoService,
+    private translation: TranslationService
+  ) {}
 
   @HostListener('document:keydown', ['$event'])
   protected onKeyDown(event: any): boolean {
