@@ -1,6 +1,7 @@
 import { CommonModule } from '@angular/common';
-import { Component, HostListener, OnInit } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
+import { CustomFormInputComponent } from '../../components/custom-form-input/custom-form-input.component';
 import { LocalStorageModel } from '../../models/localStorageModel';
 import { CryptoService } from '../../services/crypto.service';
 import { LocalStorageService } from '../../services/localStorage.service';
@@ -12,7 +13,7 @@ import {
 @Component({
   selector: 'app-game',
   standalone: true,
-  imports: [CommonModule],
+  imports: [CommonModule, CustomFormInputComponent],
   templateUrl: './game.component.html',
   styleUrl: './game.component.scss',
 })
@@ -25,17 +26,8 @@ export class GameComponent implements OnInit {
     wrongPositionCount: number;
   }[] = [];
 
-  protected numbers: { [name: string]: string } = {
-    number1: '',
-    number2: '',
-    number3: '',
-    number4: '',
-  };
-
   protected answer = '';
-  protected inputOnFocus: string = 'number1';
   protected correct: boolean = false;
-  protected submitted: boolean = false;
 
   protected localStorageModel: LocalStorageModel | null = null;
   protected enableLocalStorage = true;
@@ -48,7 +40,6 @@ export class GameComponent implements OnInit {
     private translation: TranslationService
   ) {
     this.currentDate = new Date();
-    this.currentDate.setHours(0, 0, 0, 0);
 
     if (router.url.includes('friend')) {
       this.enableLocalStorage = false;
@@ -56,38 +47,40 @@ export class GameComponent implements OnInit {
       if (!code) router.navigate(['/']);
 
       this.answer = cryptoService.decrypt(code!);
-    } else {
-      if (router.url.includes('previous')) {
-        const yearParam = route.snapshot.paramMap.get('year');
-        const monthParam = route.snapshot.paramMap.get('month');
-        const dayParam = route.snapshot.paramMap.get('day');
+      return;
+    }
 
-        if (!yearParam || !monthParam || !dayParam) {
-          router.navigate(['/']);
-          return;
-        }
+    if (router.url.includes('previous')) {
+      const yearParam = route.snapshot.paramMap.get('year');
+      const monthParam = route.snapshot.paramMap.get('month');
+      const dayParam = route.snapshot.paramMap.get('day');
 
-        const year = parseInt(yearParam!);
-        const month = parseInt(monthParam!);
-        const day = parseInt(dayParam!);
-
-        const dateParam = new Date(year, month - 1, day, 0, 0, 0, 0);
-
-        if (dateParam.getTime() >= this.currentDate.getTime()) {
-          router.navigate(['/', 'game']);
-          return;
-        }
-
-        this.currentDate = dateParam;
+      if (!yearParam || !monthParam || !dayParam) {
+        router.navigate(['/']);
+        return;
       }
 
-      let year = this.currentDate.getFullYear();
-      let month = this.currentDate.getMonth() + 1;
-      let day = this.currentDate.getDate();
+      const year = parseInt(yearParam!);
+      const month = parseInt(monthParam!);
+      const day = parseInt(dayParam!);
 
-      this.setAnswer(year, month, day);
-      if (this.enableLocalStorage) this.localStorageModel = this.service.get();
+      const dateParam = new Date(year, month - 1, day, 0, 0, 0, 0);
+
+      if (dateParam.getTime() >= this.currentDate.getTime()) {
+        router.navigate(['/', 'game']);
+        return;
+      }
+
+      this.currentDate = dateParam;
     }
+
+    this.currentDate.setHours(0, 0, 0, 0);
+    let year = this.currentDate.getFullYear();
+    let month = this.currentDate.getMonth() + 1;
+    let day = this.currentDate.getDate();
+
+    this.setAnswer(year, month, day);
+    if (this.enableLocalStorage) this.localStorageModel = this.service.get();
   }
 
   ngOnInit(): void {
@@ -105,66 +98,6 @@ export class GameComponent implements OnInit {
 
   translate(field: FieldTranslation, defaultValue: string): string {
     return this.translation.translate(field, defaultValue);
-  }
-
-  @HostListener('document:keydown', ['$event'])
-  protected onKeyDown(event: any): boolean {
-    switch (event.key) {
-      case 'Backspace':
-      case 'Delete':
-        this.numbers[this.inputOnFocus] = '';
-        break;
-      case 'Tab':
-        if (event.shiftKey) {
-          this.changeFocus(this.inputOnFocus, 'prev');
-        } else {
-          this.changeFocus(this.inputOnFocus, 'next');
-        }
-        return false;
-      case 'ArrowRight':
-        this.changeFocus(this.inputOnFocus, 'next');
-        return false;
-      case 'ArrowLeft':
-        this.changeFocus(this.inputOnFocus, 'prev');
-        return false;
-      case 'Enter':
-        this.send();
-        break;
-      default:
-        if (!isNaN(Number(event.key))) {
-          this.numbers[this.inputOnFocus] = event.key;
-          this.changeFocus(this.inputOnFocus, 'next');
-        }
-        break;
-    }
-
-    return true;
-  }
-
-  protected inputClick(controlName: string) {
-    this.inputOnFocus = controlName;
-  }
-
-  protected buttonClick(value: string) {
-    this.numbers[this.inputOnFocus] = value;
-
-    this.changeFocus(this.inputOnFocus, 'next');
-  }
-
-  private changeFocus(currentElement: string, direction: 'next' | 'prev') {
-    const keys = Object.keys(this.numbers);
-    const currentIndex = keys.indexOf(currentElement);
-    let nextIndex = 0;
-
-    if (direction == 'next') {
-      nextIndex = (currentIndex + 1) % keys.length;
-    } else {
-      nextIndex = (currentIndex - 1 + keys.length) % keys.length;
-    }
-
-    const nextKey = keys[nextIndex];
-
-    this.inputOnFocus = nextKey;
   }
 
   private setAnswer(year: number, month: number, day: number) {
@@ -205,42 +138,21 @@ export class GameComponent implements OnInit {
     this.correct = this.answer.length === currentTry.correctPositionCount;
   }
 
-  protected getValue(fieldName: string): string {
-    return this.numbers[fieldName];
-  }
+  protected send(value: string[]) {
+    const answer = value.join('');
+    this.checkAnswer(answer);
 
-  protected isValid(fieldName: string): boolean {
-    return this.numbers[fieldName] !== '';
-  }
+    if (this.enableLocalStorage) {
+      this.localStorageModel!.addAttemp(value, this.currentDate);
 
-  protected send() {
-    this.submitted = true;
+      if (this.correct) this.localStorageModel!.win(this.currentDate);
 
-    const values = Object.values(this.numbers).map((x) => String(x));
-    const answer = values.join('');
-
-    if (answer.length === values.length) {
-      this.checkAnswer(answer);
-      if (this.enableLocalStorage) {
-        this.localStorageModel!.addAttemp(values, this.currentDate);
-
-        if (this.correct) this.localStorageModel!.win(this.currentDate);
-
-        this.service.save(this.localStorageModel!);
-      }
-      this.submitted = false;
-      this.clearValues();
-      this.inputOnFocus = 'number1';
-      setTimeout(() => {
-        this.goToBottom();
-      }, 100);
+      this.service.save(this.localStorageModel!);
     }
-  }
 
-  protected clearValues() {
-    for (const name in this.numbers) {
-      this.numbers[name] = '';
-    }
+    setTimeout(() => {
+      this.goToBottom();
+    }, 100);
   }
 
   protected get winPorcentage(): string {
@@ -256,12 +168,7 @@ export class GameComponent implements OnInit {
   }
 
   protected get totalAttempts(): string {
-    if (this.localStorageModel) {
-      const game = this.localStorageModel.getGame(this.currentDate);
-      if (game) return game.totalAttempts.toFixed(0);
-    }
-
-    return '0';
+    return this.tries.length.toFixed(0);
   }
 
   protected get formatedDate(): string {

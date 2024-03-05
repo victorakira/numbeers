@@ -28,107 +28,39 @@
     </div>
   </div>
 
-  }
+  } @if(!correct){
+  <app-custom-form-input (submit)="send($event)"></app-custom-form-input>
+  } @else {
   <div class="flex flex-col">
-    @if(!correct){
-    <form class="flex flex-col">
-      <div class="flex">
-        <div
-          class="custom-span"
-          [ngClass]="{ 'custom-span-edit': inputOnFocus == 'number1' }"
-          (click)="inputClick('number1')"
-        >
-          {{ getValue("number1") }}
-        </div>
-        <div
-          class="custom-span"
-          [ngClass]="{ 'custom-span-edit': inputOnFocus == 'number2' }"
-          (click)="inputClick('number2')"
-        >
-          {{ getValue("number2") }}
-        </div>
-        <div
-          class="custom-span"
-          [ngClass]="{ 'custom-span-edit': inputOnFocus == 'number3' }"
-          (click)="inputClick('number3')"
-        >
-          {{ getValue("number3") }}
-        </div>
-        <div
-          class="custom-span"
-          [ngClass]="{ 'custom-span-edit': inputOnFocus == 'number4' }"
-          (click)="inputClick('number4')"
-        >
-          {{ getValue("number4") }}
-        </div>
-      </div>
-      <button
-        class="my-4 text-2xl font-semibold uppercase button"
-        type="button"
-        (click)="send()"
-      >
-        {{ translate("send", "Send") }}
-      </button>
-    </form>
-    } @else {
     <span class="px-5 py-3 mt-2 text-4xl font-bold text-center animate-bounce">
       {{ translate("victory", "Victory") }}!
     </span>
+
+    @if(enableLocalStorage){
+    <div
+      class="flex flex-wrap px-3 py-2 rounded-2xl bg-purple-heart-500 text-purple-heart-100"
+    >
+      <span class="w-full mb-3 text-3xl text-center lowercase">
+        {{ translate("stats", "stats") }}
+      </span>
+      <div class="flex flex-col w-1/2 p-2 text-center lowercase xl:w-1/4">
+        <span class="text-xl">{{ localStorageModel!.stats.totalGame }}</span>
+        <span>{{ translate("played", "Played") }}</span>
+      </div>
+      <div class="flex flex-col w-1/2 p-2 text-center lowercase xl:w-1/4">
+        <span class="text-xl">{{ localStorageModel!.stats.totalWin }}</span>
+        <span>{{ translate("wins", "wins") }}</span>
+      </div>
+      <div class="flex flex-col w-1/2 p-2 text-center lowercase xl:w-1/4">
+        <span class="text-xl text-nowrap">{{ winPorcentage }}%</span>
+        <span>{{ translate("wins", "wins") }}</span>
+      </div>
+      <div class="flex flex-col w-1/2 p-2 text-center lowercase xl:w-1/4">
+        <span class="text-xl">{{ totalAttempts }}</span>
+        <span>{{ translate("attempts", "Attempts") }}</span>
+      </div>
+    </div>
     }
-  </div>
-  @if(!correct){
-  <div class="flex flex-col">
-    <div class="flex">
-      <button class="button-number" (click)="buttonClick('1')">1</button>
-      <button class="button-number" (click)="buttonClick('2')">2</button>
-      <button class="button-number" (click)="buttonClick('3')">3</button>
-      <button class="button-number" (click)="buttonClick('4')">4</button>
-      <button class="button-number" (click)="buttonClick('5')">5</button>
-    </div>
-    <div class="flex">
-      <button class="button-number" (click)="buttonClick('6')">6</button>
-      <button class="button-number" (click)="buttonClick('7')">7</button>
-      <button class="button-number" (click)="buttonClick('8')">8</button>
-      <button class="button-number" (click)="buttonClick('9')">9</button>
-      <button class="button-number" (click)="buttonClick('0')">0</button>
-    </div>
-  </div>
-  } @else if(enableLocalStorage) {
-  <div
-    class="flex flex-col px-3 py-6 mt-2 rounded-2xl bg-purple-heart-500 text-purple-heart-100"
-  >
-    <span class="mb-3 text-3xl font-semibold text-center lowercase">
-      {{ translate("stats", "stats") }}
-    </span>
-    <div class="flex">
-      <div class="flex flex-col p-3 lowercase">
-        <span class="text-2xl font-semibold text-center">
-          {{ localStorageModel!.stats.totalGame }}
-        </span>
-        <span class="text-xl">{{ translate("played", "Played") }}</span>
-      </div>
-
-      <div class="flex flex-col p-3 lowercase">
-        <span class="text-2xl font-semibold text-center">
-          {{ localStorageModel!.stats.totalWin }}
-        </span>
-        <span class="text-xl">{{ translate("wins", "wins") }}</span>
-      </div>
-
-      <div class="flex flex-col p-3 lowercase">
-        <span class="text-2xl font-semibold text-center">
-          {{ winPorcentage }} %
-        </span>
-        <span class="text-xl">{{ translate("wins", "wins") }}</span>
-      </div>
-
-      <div class="flex flex-col p-3 lowercase">
-        <span class="text-2xl font-semibold text-center">
-          {{ totalAttempts }}
-        </span>
-        <span class="text-xl">{{ translate("attempts", "Attempts") }}</span>
-      </div>
-    </div>
   </div>
   }
 </div>

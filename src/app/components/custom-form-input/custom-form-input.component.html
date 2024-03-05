@@ -1,0 +1,54 @@
+<div class="flex flex-col items-center justify-center">
+  <div class="flex">
+    <div
+      class="custom-span"
+      [ngClass]="{ 'custom-span-edit': inputOnFocus == 'number1' }"
+      (click)="setFocus('number1')"
+    >
+      {{ numbers["number1"] }}
+    </div>
+    <div
+      class="custom-span"
+      [ngClass]="{ 'custom-span-edit': inputOnFocus == 'number2' }"
+      (click)="setFocus('number2')"
+    >
+      {{ numbers["number2"] }}
+    </div>
+    <div
+      class="custom-span"
+      [ngClass]="{ 'custom-span-edit': inputOnFocus == 'number3' }"
+      (click)="setFocus('number3')"
+    >
+      {{ numbers["number3"] }}
+    </div>
+    <div
+      class="custom-span"
+      [ngClass]="{ 'custom-span-edit': inputOnFocus == 'number4' }"
+      (click)="setFocus('number4')"
+    >
+      {{ numbers["number4"] }}
+    </div>
+  </div>
+  <button
+    class="w-full my-4 text-2xl font-semibold uppercase button"
+    type="button"
+    (click)="send()"
+  >
+    {{ translate("send", "Send") }}
+  </button>
+
+  <div class="flex">
+    <button class="button-number" (click)="setValue('1')">1</button>
+    <button class="button-number" (click)="setValue('2')">2</button>
+    <button class="button-number" (click)="setValue('3')">3</button>
+    <button class="button-number" (click)="setValue('4')">4</button>
+    <button class="button-number" (click)="setValue('5')">5</button>
+  </div>
+  <div class="flex">
+    <button class="button-number" (click)="setValue('6')">6</button>
+    <button class="button-number" (click)="setValue('7')">7</button>
+    <button class="button-number" (click)="setValue('8')">8</button>
+    <button class="button-number" (click)="setValue('9')">9</button>
+    <button class="button-number" (click)="setValue('0')">0</button>
+  </div>
+</div>
