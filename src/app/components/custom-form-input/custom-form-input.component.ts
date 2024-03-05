@@ -1,5 +1,12 @@
 import { CommonModule } from '@angular/common';
-import { Component, EventEmitter, HostListener, Output } from '@angular/core';
+import {
+  Component,
+  ElementRef,
+  EventEmitter,
+  HostListener,
+  Output,
+  ViewChild,
+} from '@angular/core';
 import {
   FieldTranslation,
   TranslationService,
@@ -15,6 +22,9 @@ import {
 export class CustomFormInputComponent {
   @Output()
   submit = new EventEmitter<string[]>();
+
+  @ViewChild('inputs')
+  divInputs!: ElementRef;
 
   protected inputOnFocus = 'number1';
 
@@ -83,7 +93,14 @@ export class CustomFormInputComponent {
   }
 
   protected send() {
-    if (!this.isFormValid()) return;
+    if (!this.isFormValid()) {
+      this.divInputs.nativeElement.classList.add('animate-shake');
+      setTimeout(() => {
+        this.divInputs.nativeElement.classList.remove('animate-shake');
+      }, 800);
+
+      return;
+    }
 
     const values = Object.values(this.numbers).map((x) => String(x));
 

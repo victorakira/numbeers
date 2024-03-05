@@ -1,4 +1,3 @@
-import { CommonModule } from '@angular/common';
 import { Component } from '@angular/core';
 import { CustomFormInputComponent } from '../../components/custom-form-input/custom-form-input.component';
 import { CryptoService } from '../../services/crypto.service';
@@ -10,7 +9,7 @@ import {
 @Component({
   selector: 'app-generate-number',
   standalone: true,
-  imports: [CommonModule, CustomFormInputComponent],
+  imports: [CustomFormInputComponent],
   templateUrl: './generate-number.component.html',
   styleUrl: './generate-number.component.scss',
 })

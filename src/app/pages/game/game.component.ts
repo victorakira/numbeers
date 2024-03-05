@@ -1,6 +1,5 @@
-import { CommonModule } from '@angular/common';
 import { Component, OnInit } from '@angular/core';
-import { ActivatedRoute, Router } from '@angular/router';
+import { ActivatedRoute, Router, RouterLink } from '@angular/router';
 import { CustomFormInputComponent } from '../../components/custom-form-input/custom-form-input.component';
 import { LocalStorageModel } from '../../models/localStorageModel';
 import { CryptoService } from '../../services/crypto.service';
@@ -13,7 +12,7 @@ import {
 @Component({
   selector: 'app-game',
   standalone: true,
-  imports: [CommonModule, CustomFormInputComponent],
+  imports: [RouterLink, CustomFormInputComponent],
   templateUrl: './game.component.html',
   styleUrl: './game.component.scss',
 })
