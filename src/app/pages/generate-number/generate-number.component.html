@@ -58,11 +58,11 @@
 
   @if(link){
   <div class="flex flex-col items-center justify-center">
-    <span>{{ translate("sendlink", "Send this link to your friend") }}</span>
-    <span>({{ translate("copylink", "click to copy") }})</span>
+    <span>{{ translate("sendLink", "Send this link to your friend") }}</span>
+    <span>({{ translate("copyLink", "click to copy") }})</span>
     <button (click)="copy()" class="underline">{{ link }}</button>
     @if(copied) {
-    <span>{{ translate("copiedlink", "link copied") }}!</span>
+    <span>{{ translate("copiedLink", "link copied") }}!</span>
     }
   </div>
   }
