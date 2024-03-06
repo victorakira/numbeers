@@ -27,5 +27,5 @@
   "settings": "Configurações",
   "language": "Idioma",
   "share": "Compartilhe",
-  "shareMessage": "Joguei Find Pin {0} e consegui em {1} tentativas."
+  "shareMessage": "Joguei {0} {1} e consegui em {2} tentativas."
 }
