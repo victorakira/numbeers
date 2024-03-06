@@ -11,8 +11,6 @@ import { HeaderComponent } from './components/header/header.component';
   styleUrl: './app.component.scss',
 })
 export class AppComponent {
-  title = 'numbeers';
-
   constructor() {
     console.log('version', environment.Version);
   }
