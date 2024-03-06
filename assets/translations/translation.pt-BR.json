@@ -25,5 +25,7 @@
   "victory": "Vitória",
   "customGame": "Jogo customizado",
   "settings": "Configurações",
-  "language": "Idioma"
+  "language": "Idioma",
+  "share": "Compartilhe",
+  "shareMessage": "Joguei Find Pin {0} e consegui em {1} tentativas."
 }
