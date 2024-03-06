@@ -25,5 +25,7 @@
   "victory": "Vitória",
   "customGame": "Jogo customizado",
   "settings": "Configurações",
-  "language": "Idioma"
+  "language": "Idioma",
+  "share": "Compartilhe",
+  "shareMessage": "Joguei {0} {1} e consegui em {2} tentativas."
 }

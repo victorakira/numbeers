@@ -74,4 +74,6 @@ export type FieldTranslation =
   | 'victory'
   | 'customGame'
   | 'settings'
-  | 'language';
+  | 'language'
+  | 'share'
+  | 'shareMessage';

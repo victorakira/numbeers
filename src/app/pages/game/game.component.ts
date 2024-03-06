@@ -33,7 +33,7 @@ export class GameComponent implements OnInit {
 
   constructor(
     route: ActivatedRoute,
-    router: Router,
+    private router: Router,
     cryptoService: CryptoService,
     private service: LocalStorageService,
     private translation: TranslationService
@@ -152,6 +152,39 @@ export class GameComponent implements OnInit {
     setTimeout(() => {
       this.goToBottom();
     }, 100);
+  }
+
+  protected share() {
+    let text = this.translate(
+      'shareMessage',
+      'I played {0} {1} and got it in {2} guesses.'
+    );
+    const baseUrl = window.location.href.replace(this.router.url, '');
+    const total = parseInt(this.totalAttempts);
+
+    text = this.formatString(
+      text,
+      baseUrl,
+      this.formatedDate,
+      this.totalAttempts
+    );
+    text += '\n\n';
+
+    for (let index = 0; index < total; index++) {
+      if (index != total - 1) {
+        text += '🟥';
+      } else {
+        text += '🟩';
+      }
+    }
+
+    navigator.clipboard.writeText(text);
+  }
+
+  formatString(format: string, ...args: any[]): string {
+    return format.replace(/{(\d+)}/g, (match, index) => {
+      return typeof args[index] != 'undefined' ? args[index] : match;
+    });
   }
 
   protected get winPorcentage(): string {
